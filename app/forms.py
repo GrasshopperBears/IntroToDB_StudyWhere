@@ -1,10 +1,10 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, BooleanField, SubmitField, TextAreaField, PasswordField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, EqualTo
 
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
+    userid = StringField('ID', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember_me')
     submit = SubmitField('Sign In')
@@ -23,4 +23,12 @@ class reviewForm(FlaskForm):
                 )
     submit = SubmitField('제출')
 
+
+class registerForm(FlaskForm):
+    userid = StringField('ID', validators=[DataRequired('ID를 입력해주세요.')])
+    password = PasswordField('비밀번호', validators=[DataRequired(), EqualTo('password_confirm', message='Passwords must match')])
+    password_confirm = PasswordField('비밀번호 확인', validators=[DataRequired()])
+    username = StringField('Username', validators=[DataRequired('이름을 입력해주세요.')])
+    terms = BooleanField('이용 약관에 동의합니다.', validators=[DataRequired('약관에 동의해주세요.')])
+    submit = SubmitField('가입')
 

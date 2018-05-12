@@ -7,10 +7,11 @@
       {% endif %}
     </head>
     <body>
-        <div>Microblog: 
+        <div>Menu: 
                         <a href="/">Home</a>
                         <a href="{{ url_for('login') }}">Login</a>
-                        <a href="{{ url_for('review') }}">review</a>
+                        <a href="/register">Register</a>
+                        <a href="{{ url_for('review') }}">review</a><br>
         </div>
         <hr>
         {% with messages = get_flashed_messages() %}
