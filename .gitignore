@@ -1,0 +1,5 @@
+#Python related
+__pycache__/
+
+#VS Code editor
+.vscode/
