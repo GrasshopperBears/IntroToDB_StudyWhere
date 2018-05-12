@@ -1,0 +1,53 @@
+[TABLE] USER
+-	user_id (VARCHAR(15)), not NULL, PK
+-	user_name (VARCHAR(10)), not NULL
+-	password_hash (VARCHAR(150)), not NULL
+
+[TABLE] BUILDING
+-	building_number (VARCHAR(6)), not NULL, PK
+-	building_name (VARCHAR(80)), not NULL
+
+[TABLE] CATEGORY
+-	category_number (INT), not NULL, PK
+-	type (VARCHAR(20)), not NULL
+
+[TABLE] LOCATION
+-	location_number (INT), not NULL, PK
+-	location_name (VARCHAR(30)), not NULL
+-	building_code (INT), not NULL, FK to BUILDING.building_number
+-	category_number (INT) , not NULL, FK to CATEGORY.category_number
+-	available_begin_weekday (TIME)
+-	available_end_weekday (TIME)
+-	available_begin_weekend (TIME)
+-	available_end_weekend (TIME)
+
+[TABLE] SLOT
+-	slot_id (INT), not NULL , PK
+-	slot_name (VARCHAR(50)) , not NULL
+-	slot_location (INT) , not NULL, FK to LOCATION.location_number
+-	slot_type (INT) , not NULL, FK to SLOTTYPES.slot_number
+-	max_reserve_time (INT)
+?
+[TABLE] SLOTTYPES
+-	slot_number (INT) , not NULL
+-	slot_type (VARCHAR(30))
+-	maximum_capacity (INT)
+-	minimum_capacity (INT)
+
+[TABLE] RESERVATION
+-	reservation_id (INT) , not NULL
+-	reserve_slot (INT) , not NULL, FK to SLOT.slot_id
+-	user_id (VARCHAR(15)) , not NULL, FK to USER.user_id
+-	begin_date (DATETIME) , not NULL
+-	end_date (DATETIME) , not NULL
+-	num_people (INT) , not NULL
+-	reservation_purpose (VARCHAR(50))
+
+[TABLE] REVIEW
+-	review_number (INT) , not NULL
+-	user_id (VARCHAR(15)) , not NULL
+-	location_number (INT) , not NULL
+-	like_score (INT)
+-	crowded_score (INT)
+-	comment (VARCHAR(300))
+-	timestamp (DATETIME) , not NULL
