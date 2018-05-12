@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="row">
+    <section class="samplebox col-sm-8 offset-sm-2">
+      <h1>{{ title }}</h1>
+      <form>
+        <div class="form-group row">
+          <label for="user-count" class="col-sm-2 col-form-label">이용자 수</label>
+          <div class="col-sm-10 form-inline">
+            <input class="form-control" type="number" id="user-count" value="{{ num_users|default(1) }}" min="1" required>&nbsp;명
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="reservation-description" class="col-sm-2 col-form-label">이용 목적</label>
+          <div class="col-sm-10">
+            <textarea class="form-control" id="reservation-description" rows="6">{{ reservation_description|default('') }}</textarea>
+          </div>
+        </div>
+
+        <div class="form-group float-right">
+          {% if is_new_reservation %}
+
+            <button type="submit" name="action" value="reserve" class="btn btn-primary">예약하기</button>
+            <button type="submit" name="action" value="cancel" class="btn btn-secondary">취소</button>
+
+          {% else %}
+            
+            <button type="submit" name="action" value="save" class="btn btn-primary">수정하기</button>
+            <button type="submit" name="action" value="cancel" class="btn btn-secondary">취소</button>
+            <button type="submit" name="action" value="delete" class="btn btn-danger">삭제</button>
+
+          {% endif %}
+
+        </div>
+      </form>
+    </section>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+
+  {% if is_new_reservation %}
+  
+    <script>    
+      $('button[name="action"][value="cancel"]').click(function () {
+        if (confirm("예약을 취소하시겠습니까?"))
+          location.href = "{{ url_for('location_rooms', location = request.args.location) }}";
+      });
+    </script>
+
+  {% else %}
+
+    <script>
+      $('button[name="action"][value="delete"]').click(function () {
+        return confirm("예약을 삭제하시겠습니까?");
+      });
+    </script>
+
+  {% endif %}
+
+{% endblock %}

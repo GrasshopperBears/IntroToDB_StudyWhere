@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <div class="row">
+    <section class="samplebox col-sm-8 offset-sm-2">
+      <h1>{{ title }}</h1>
+      <div>이용 시간: {{ time_begin }} ~ {{ time_end }}</div>
+      <div>만족도: {{ '(평가해 주세요)' if happiness_rating == 0 else happiness_rating }} / {{ max_happiness_rating }}</div>
+      <div>혼잡도: {{ '(평가해 주세요)' if crowded_rating == 0 else crowded_rating }} / {{ max_crowded_rating }}}</div>
+      {% if is_reservable %}
+        <div>현재 이용자 수: {{ num_current_reservations }} / {{ num_max_reservations }}명 (<a href="{{ url_for('location_rooms', location = request.args.location) }}">예약하기</a>)</div>
+      {% endif %}
+    </section>
+  </div>
+
+  <div class="row">
+    <section class="samplebox col-sm-8 offset-sm-2">
+      {% if comments %}
+
+        {% for comment in comments %}
+
+          <section class="location-comment">
+            익명
+            {{ comment.happiness_rating }}
+            <img class="rating-icon"
+              alt="사람 수: {{ comment.crowded_rating }}"
+              src="/static/images/crowd-{{ comment.crowded_rating }}.png">
+            {{ comments[i].comment[:50] if comment.comment else '(한줄평 없음)' }}
+          </section>
+
+        {% endfor %}
+      
+      {% else %}
+      
+        <section class="location-comment">
+          (평가가 없습니다)
+        </section>
+
+      {% endif %}
+
+      <nav aria-label="한줄평 더 보기" style="float: none; margin: auto;">
+        <ul class="pagination justify-content-center mt-2">
+          <li class="page-item {{ '' if comment_pagination.prev else 'disabled' }}">
+            <a class="page-link" href="{{ url_for( 'locations', location = request.args.location, comment_pagination.prev) }}">&lt;</a>
+          </li>
+
+          {% for page_num in comment_pages %}
+            <li class="page-item {{ 'active' if current_comment_page == page_num else '' }}">
+              <a class="page-link" href="{{ url_for( 'locations', location = request.args.location, page_num) }}">{{ page_num }}</a>
+            </li>
+          {% endfor %}
+
+          <li class="page-item {{ '' if comment_pagination.next else 'disabled' }}">
+            <a class="page-link" href="{{ url_for( 'locations', location = request.args.location, comment_pagination.next) }}">&gt;</a>
+          </li>
+        </ul>
+      </nav>
+    </section>
+  </div>
+
+  {% endblock %}
