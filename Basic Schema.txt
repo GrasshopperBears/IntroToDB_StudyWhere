@@ -14,7 +14,7 @@
 [TABLE] LOCATION
 -	location_number (INT), not NULL, PK
 -	location_name (VARCHAR(30)), not NULL
--	building_code (INT), not NULL, FK to BUILDING.building_number
+-	building_code (VARCHAR(6)), not NULL, FK to BUILDING.building_number
 -	category_number (INT) , not NULL, FK to CATEGORY.category_number
 -	available_begin_weekday (TIME)
 -	available_end_weekday (TIME)
