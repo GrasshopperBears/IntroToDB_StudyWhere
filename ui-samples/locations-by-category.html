@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <link rel="stylesheet" href="/static/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/static/css/studywhere.css" />
+
+  <title>공부하려면 어디로? - 공부할 장소 찾기</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <section class="samplebox col-sm-8 offset-sm-2">
+        <h1>공부할 장소 찾기</h1>
+        <form class="form-inline">
+          <select class="form-control form-control-sm" id="filter-type">
+            <option value="buildings">건물</option>
+            <option value="location-type" selected>종류</option>
+          </select>
+          <label for="filter-type">별로 보기</label>
+        </form>
+      </section>
+    </div>
+
+    <div class="row">
+      <section class="samplebox col-sm-8 offset-sm-2">
+        <section class="location-group-info">
+          <h2>열람실</h2>
+          <div class="location-group-info__studylocations">
+            <a href="#">교양분관 (N10)</a>,
+            <a href="#">학술문화관 (E9)</a>
+          </div>
+        </section>
+        <section class="location-group-info">
+          <h2>세미나실</h2>
+          <div class="location-group-info__studylocations">
+            <a href="#">교양분관 (N10)</a>,
+            <a href="#">학술문화관 (E9)</a>,
+            <a href="#">KI 빌딩 (E4)</a>
+          </div>
+        </section>
+        <section class="location-group-info">
+          <h2>카페</h2>
+          <div class="location-group-info__studylocations">
+            <a href="#">KI 빌딩 (E4)</a>
+          </div>
+        </section>
+        <section class="location-group-info">
+          <h2>열린 학습공간</h2>
+          <div class="location-group-info__studylocations">
+            <a href="#">교양분관 (N10)</a>
+          </div>
+        </section>
+      </section>
+    </div>
+
+  </div>
+
+  <script src="/static/js/jquery.slim.min.js "></script>
+  <script src="/static/js/bootstrap.bundle.min.js "></script>
+</body>
+
+</html>
