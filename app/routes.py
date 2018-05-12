@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for, request
 from app import app
-from app.forms import LoginForm, reviewForm
+from app.forms import LoginForm, reviewForm, registerForm
 
 
 @app.route('/')
@@ -26,3 +26,13 @@ def review():
         return redirect("/")
 
     return render_template('review.html', title='Review', form=review)
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    register = registerForm()
+    if register.validate_on_submit():
+        flash(' ID: {}, 이름={} 님의 회원가입이 완료되었습니다.'.format(
+            register.userid.data, register.username.data))
+        return redirect("/")
+
+    return render_template('register.html', title='Register', form=register)
