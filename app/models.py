@@ -78,14 +78,14 @@ class Slottypes(Base):
     slot_number = Column(Integer, unique=True, primary_key=True)
     slot_type = Column(String(30))
     maximum_capacity = Column(Integer)
-    minimum_capaticy = Column(Integer)
+    
 
     def __init__(self, slot_number=None, slot_type=None, 
-        maximum_capacity=None, minimum_capactiy=None):
+        maximum_capacity=None, ):
         self.slot_number = slot_number
         self.slot_type = slot_type
         self.maximum_capacity = maximum_capacity
-        self.minimum_capaticy = minimum_capaticy
+        
     def __repr__(self):
         return '<Slot type number: %r, Slot type: %r>' % (self.slot_number, self.slot_type)
 
@@ -97,14 +97,16 @@ class Slot(Base):
     slot_location = Column(Integer, ForeignKey(Location.location_number), unique=True)
     slot_type = Column(Integer, ForeignKey(Slottypes.slot_number), unique=True)
     max_reserve_time = Column(Integer)
+    minimum_capacity = Column(Integer)
     
     def __init__(self, slot_id=None, slot_name=None, slot_location=None, 
-        slot_type=None, max_reserve_time=None):
+        slot_type=None, max_reserve_time=None, minimum_capactiy=None):
         self.slot_id = slot_id
         self.slot_name = slot_name
         self.slot_location= slot_location
         self.slot_type = slot_type
         self.max_reserve_time = max_reserve_time
+        self.minimum_capacity = minimum_capacity
 
     def __repr__(self):
         return '<Slot id: %r, Slot name : %r>' % (self.slot_id, self.slot_name)
