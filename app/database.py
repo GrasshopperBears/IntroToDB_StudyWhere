@@ -1,8 +1,10 @@
+# -- coding: utf-8 --
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-engine = create_engine('mysql://root:0000@localhost:3306/wheretogo', convert_unicode=True)
+engine = create_engine('mysql://root:0000@localhost:3306/w2g?charset=utf8', convert_unicode=True)
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
                                          bind=engine))
