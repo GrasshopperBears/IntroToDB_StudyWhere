@@ -25,7 +25,7 @@
             {{ comment.happiness_rating }}
             <img class="rating-icon"
               alt="사람 수: {{ comment.crowded_rating }}"
-              src="/static/images/crowd-{{ comment.crowded_rating }}.png">
+              src="../static/images/crowd-{{ comment.crowded_rating }}.png">
             {{ comments[i].comment[:50] if comment.comment else '(한줄평 없음)' }}
           </section>
 
