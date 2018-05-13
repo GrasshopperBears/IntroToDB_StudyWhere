@@ -1,4 +1,4 @@
-[TABLE] USER
+﻿[TABLE] USER
 -	user_id (VARCHAR(15)), not NULL, PK
 -	user_name (VARCHAR(10)), not NULL
 -	password_hash (VARCHAR(150)), not NULL
@@ -27,12 +27,12 @@
 -	slot_location (INT) , not NULL, FK to LOCATION.location_number
 -	slot_type (INT) , not NULL, FK to SLOTTYPES.slot_number
 -	max_reserve_time (INT)
-?
-[TABLE] SLOTTYPES
+-	minimum_capacity (INT)
+
+[TABLE] SLOTTYPES	몇인실인지(열람실일 경우도 '개인 좌석'으로 표시), 최대 수용 인원은 몇 명인지에 대한 정보
 -	slot_number (INT) , not NULL
 -	slot_type (VARCHAR(30))
 -	maximum_capacity (INT)
--	minimum_capacity (INT)
 
 [TABLE] RESERVATION
 -	reservation_id (INT) , not NULL
