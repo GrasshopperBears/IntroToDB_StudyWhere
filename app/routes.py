@@ -1,12 +1,11 @@
 from flask import render_template, flash, redirect, url_for, request
 from app import app
 from app.forms import LoginForm, reviewForm, registerForm
-from app.models import *
 
 
 @app.route('/')
 def home():
-    return render_template('home2.html', title = 'CS360 Team5')
+    return render_template('home.html', title = 'Exp')
 
 
 @app.route('/login',  methods=['GET', 'POST'])
@@ -37,8 +36,3 @@ def register():
         return redirect("/")
 
     return render_template('register.html', title='Register', form=register)
-
-@app.route('/locations', methods=['GET', 'POST'])
-def locations():
-    locations = Location.query.all()
-    return render_template('locations.html', title='공부할 장소 찾기',locations=locations) 
