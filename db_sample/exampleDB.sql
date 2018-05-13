@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `wheretostudy` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `wheretostudy`;
 -- MySQL dump 10.13  Distrib 5.7.22, for Win64 (x86_64)
 --
 -- Host: localhost    Database: wheretostudy
@@ -117,6 +115,8 @@ CREATE TABLE `reservation` (
   PRIMARY KEY (`reservation_id`),
   KEY `fk_RESERVATION_USER1_idx` (`user_id`),
   KEY `fk_RESERVATION_SLOT1_idx` (`reserve_slot`),
+  KEY `begin_date_index` (`begin_date`),
+  KEY `end_date_index` (`end_date`),
   CONSTRAINT `fk_RESERVATION_SLOT1` FOREIGN KEY (`reserve_slot`) REFERENCES `slot` (`slot_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_RESERVATION_USER1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -263,4 +263,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-13 22:13:33
+-- Dump completed on 2018-05-13 22:52:25
