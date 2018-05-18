@@ -1,0 +1,1 @@
+SELECT slot_name, slot_location, minimum_capacity FROM slot WHERE slot_type = (SELECT slot_number FROM slottypes WHERE slot_type = '4인실');
