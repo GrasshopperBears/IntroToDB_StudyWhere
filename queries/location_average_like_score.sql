@@ -1,0 +1,1 @@
+SELECT AVG(like_score) FROM review WHERE location_number = num;

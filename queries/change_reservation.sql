@@ -1,0 +1,1 @@
+UPDATE reservation SET begin_date = new_begin, end_date = new_end, num_people = new_people, reservation_purpose = new_purpose WHERE reservation_id = num;
