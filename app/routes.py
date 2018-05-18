@@ -77,3 +77,39 @@ def location():
 
     return render_template('locations.html', title='Locations', form = form, locations = locations)
 
+@app.route('/locations/<location_id>', methods=['GET','POST'])
+def study_location(location_id):
+    location = Location.query.filter_by(location_number = location_id).first()
+    return render_template('location.html', title=location.location_name, location = location)
+
+@app.route('/locations/<location_id>/comment', methods=['GET','POST'])
+def comment_on_location(location_id):
+    location = Location.query.filter_by(location_number = location_id).first()
+    return render_template('location-comment.html', title=location.location_name, location = location)
+
+@app.route('/locations/<location_id>/reservations')
+def choose_slot_for_location(location_id):
+    location = Location.query.filter_by(location_number = location_id).first()
+    slot = Slot.query.filter_by(slot_location = location.location_number).all()
+    return render_template('location-rooms.html', title='Choose slot', location = location, slot = slot)
+
+@app.route('/locations/<location_id>/add_reservation', methods = ['GET','POST'])
+def add_reservation(location_id):
+    location = Location.query.filter_by(location_number = location_id).first()
+    slot = Slot.query.filter_by(slot_location = location.location_number).all()
+    reservation_for_slot = Reservation.query.filter_by(reserve_slot = slot.slot_id).all()
+    return render_template('reserve-room.html', title = reservation, location = location, slot = slot, reservation = reservation_for_slot)
+
+@app.route('/my_reservations', methods = ['GET','POST'])
+@login_required
+def my_reservations():
+    my_reservations = Reservation.query.filter_by(user_id = current_user.user_id).all()
+    return render_template('my-reservations.html', my_reservations = my_reservations)
+
+@app.route('/reservation/<reservation_id>', methods=['GET','POST'])
+@login_required
+def reservation_modify(reservation_id):
+    chosen_reservation = Reservation.query.filter_by(reservation_id = reservation_id).first()
+    if current_user.user_id != chosen_reservation.user_id:
+        return redirect("/")
+    return redirect("/")
