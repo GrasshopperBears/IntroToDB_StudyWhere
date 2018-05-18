@@ -107,7 +107,7 @@ DROP TABLE IF EXISTS `reservation`;
 CREATE TABLE `reservation` (
   `reservation_id` int(11) NOT NULL,
   `reserve_slot` int(11) NOT NULL,
-  `user_id` varchar(15) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `begin_date` datetime NOT NULL,
   `end_date` datetime NOT NULL,
   `num_people` int(11) NOT NULL,
@@ -116,7 +116,9 @@ CREATE TABLE `reservation` (
   KEY `fk_RESERVATION_SLOT1_idx` (`reserve_slot`),
   KEY `begin_date_index` (`begin_date`),
   KEY `end_date_index` (`end_date`),
-  CONSTRAINT `fk_RESERVATION_SLOT1` FOREIGN KEY (`reserve_slot`) REFERENCES `slot` (`slot_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `fk_reservation_user1_idx` (`user_id`),
+  CONSTRAINT `fk_RESERVATION_SLOT1` FOREIGN KEY (`reserve_slot`) REFERENCES `slot` (`slot_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_reservation_user1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -138,7 +140,7 @@ DROP TABLE IF EXISTS `review`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `review` (
   `review_number` int(11) NOT NULL,
-  `user_id` varchar(15) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `location_number` int(11) NOT NULL,
   `like_score` int(11) DEFAULT NULL,
   `crowded_score` int(11) DEFAULT NULL,
@@ -146,7 +148,9 @@ CREATE TABLE `review` (
   `timestamp` datetime NOT NULL,
   PRIMARY KEY (`review_number`),
   KEY `fk_REVIEW_LOCATION1_idx` (`location_number`),
-  CONSTRAINT `fk_REVIEW_LOCATION1` FOREIGN KEY (`location_number`) REFERENCES `location` (`location_number`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `fk_review_user1_idx` (`user_id`),
+  CONSTRAINT `fk_REVIEW_LOCATION1` FOREIGN KEY (`location_number`) REFERENCES `location` (`location_number`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_review_user1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -156,7 +160,7 @@ CREATE TABLE `review` (
 
 LOCK TABLES `review` WRITE;
 /*!40000 ALTER TABLE `review` DISABLE KEYS */;
-INSERT INTO `review` VALUES (1,'user',1,1,NULL,'사람들이 왔다갔다 해서 시끄러워요','2018-05-13 19:43:00');
+INSERT INTO `review` VALUES (1,1,1,1,NULL,'사람들이 왔다갔다 해서 시끄러워요','2018-05-13 19:43:00');
 /*!40000 ALTER TABLE `review` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -260,4 +264,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-18 15:03:33
+-- Dump completed on 2018-05-18 15:29:49
