@@ -1,0 +1,1 @@
+SELECT reserve_slot, begin_date, end_date, num_people, reservation_purpose FROM reservation WHERE user_id = id;
