@@ -113,12 +113,10 @@ CREATE TABLE `reservation` (
   `num_people` int(11) NOT NULL,
   `reservation_purpose` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`reservation_id`),
-  KEY `fk_RESERVATION_USER1_idx` (`user_id`),
   KEY `fk_RESERVATION_SLOT1_idx` (`reserve_slot`),
   KEY `begin_date_index` (`begin_date`),
   KEY `end_date_index` (`end_date`),
-  CONSTRAINT `fk_RESERVATION_SLOT1` FOREIGN KEY (`reserve_slot`) REFERENCES `slot` (`slot_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_RESERVATION_USER1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_RESERVATION_SLOT1` FOREIGN KEY (`reserve_slot`) REFERENCES `slot` (`slot_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -148,9 +146,7 @@ CREATE TABLE `review` (
   `timestamp` datetime NOT NULL,
   PRIMARY KEY (`review_number`),
   KEY `fk_REVIEW_LOCATION1_idx` (`location_number`),
-  KEY `fk_REVIEW_USER1_idx` (`user_id`),
-  CONSTRAINT `fk_REVIEW_LOCATION1` FOREIGN KEY (`location_number`) REFERENCES `location` (`location_number`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_REVIEW_USER1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_REVIEW_LOCATION1` FOREIGN KEY (`location_number`) REFERENCES `location` (`location_number`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -229,11 +225,12 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` varchar(15) NOT NULL,
   `user_name` varchar(10) NOT NULL,
   `password_hash` varchar(150) NOT NULL,
-  PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -242,7 +239,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('user','관리자','pbkdf2:sha256:50000$gD8jESrh$ec8e5d1aba337866b1a4df9e47c081f8e768a57682c69806ca1b03efb17ff0dc');
+INSERT INTO `user` VALUES (1,'user','관리자','pbkdf2:sha256:50000$gD8jESrh$ec8e5d1aba337866b1a4df9e47c081f8e768a57682c69806ca1b03efb17ff0dc');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -263,4 +260,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-18 14:36:51
+-- Dump completed on 2018-05-18 15:03:33
