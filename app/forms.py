@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, BooleanField, SubmitField, TextAreaField, PasswordField
-from wtforms.validators import DataRequired, EqualTo
+from wtforms.validators import ValidationError, DataRequired, EqualTo
+from app.models import *
 
 
 class LoginForm(FlaskForm):
@@ -26,9 +27,14 @@ class reviewForm(FlaskForm):
 
 class registerForm(FlaskForm):
     userid = StringField('ID', validators=[DataRequired('ID를 입력해주세요.')])
-    password = PasswordField('비밀번호', validators=[DataRequired(), EqualTo('password_confirm', message='Passwords must match')])
-    password_confirm = PasswordField('비밀번호 확인', validators=[DataRequired()])
+    password = PasswordField('비밀번호', validators=[DataRequired()])
+    password_confirm = PasswordField('비밀번호 확인', validators=[DataRequired(), EqualTo('password', message='Passwords must match')])
     username = StringField('Username', validators=[DataRequired('이름을 입력해주세요.')])
     terms = BooleanField('이용 약관에 동의합니다.', validators=[DataRequired('약관에 동의해주세요.')])
     submit = SubmitField('가입')
+
+    def validate_userid(self, userid):
+        user = User.query.filter_by(user_id = userid.data).first()
+        if user is not None:
+            raise ValidationError('이미 이 아이디를 가진 사용자가 존재합니다.')
 
