@@ -4,7 +4,6 @@ from app.forms import LoginForm, reviewForm, registerForm, LocationListFilterFor
 from flask_login import current_user, login_user, logout_user, login_required
 from app.database import db_session
 from app.models import *
-from sqlalchemy import *
 
 
 # @app.route('/static/<path:path>')

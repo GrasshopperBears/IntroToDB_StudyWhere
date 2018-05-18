@@ -13,9 +13,19 @@
 </head>
 
 <body>
-  <div class="container">
+  <div class="container"><div class="row"><div class="col-sm-8 offset-sm-2">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <section class="samplebox flashes"><ul>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul></section>
+      {% endif %}
+    {% endwith %}
+
     {% block content %}{% endblock %}
-  </div>
+  </div></div></div>
 
   <script src="/static/js/jquery.slim.min.js"></script>
   <script src="/static/js/bootstrap.bundle.min.js"></script>

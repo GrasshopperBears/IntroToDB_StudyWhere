@@ -2,52 +2,48 @@
 
 {% block content %}
 
-  <div class="row">
-    <div class="samplebox col-sm-8 offset-sm-2 align-self-center">
+  <section class="samplebox">
       <h1>{{ title }}</h1>
       <form class="form-inline" method="POST">
         {{ form.filter_type(class = 'form-control form-control-sm') }}
         {{ form.filter_type.label }}
       </form>
-    </div>
-  </div>
-  <div class="row">
-    <div class="samplebox col-sm-8 offset-sm-2">
-      {% if form.filter_type.data == 'building' %}
+  </section>
+  <section class="samplebox">
+    {% if form.filter_type.data == 'building' %}
 
-        {% for building_code, loc_list in locations|groupby('building_code') %}
+      {% for building_code, loc_list in locations|groupby('building_code') %}
 
-          <section class="location-group-info">
-            <h2>{{ loc_list[0].building.building_name ~ ' (' ~ building_code ~ ')' }}</h2>
-            <div class="location-group-info__studylocations">
-              {% for location in loc_list %}
-                <a href="">{{ location.location_name }}</a>
-                {%- if not loop.last %},{% endif %}
-              {% endfor %}
-            </div>
-          </section>
+        <section class="location-group-info">
+          <h2>{{ loc_list[0].building.building_name ~ ' (' ~ building_code ~ ')' }}</h2>
+          <div class="location-group-info__studylocations">
+            {% for location in loc_list %}
+              <a href="">{{ location.location_name }}</a>
+              {%- if not loop.last %},{% endif %}
+            {% endfor %}
+          </div>
+        </section>
 
-        {% endfor %}
+      {% endfor %}
 
-      {% else %}
-      
-        {% for category_number, loc_list in locations|groupby('category_number') %}
+    {% else %}
+    
+      {% for category_number, loc_list in locations|groupby('category_number') %}
 
-          <section class="location-group-info">
-            <h2>{{ loc_list[0].category.type }}</h2>
-            <div class="location-group-info__studylocations">
-              {% for location in loc_list %}
-                <a href="">{{ location.location_name }}</a> ({{ location.building.building_name ~ ' (' ~ location.building_code ~ ')' }})
-                {%- if not loop.last %},{% endif %}
-              {% endfor %}
-            </div>
-          </section>
-          
-        {% endfor %}
+        <section class="location-group-info">
+          <h2>{{ loc_list[0].category.type }}</h2>
+          <div class="location-group-info__studylocations">
+            {% for location in loc_list %}
+              <a href="">{{ location.location_name }}</a> ({{ location.building.building_name ~ ' (' ~ location.building_code ~ ')' }})
+              {%- if not loop.last %},{% endif %}
+            {% endfor %}
+          </div>
+        </section>
+        
+      {% endfor %}
 
-      {% endif %}
-    </div>
-  </div>
+    {% endif %}
+  </section>
 
 {% endblock %}
 

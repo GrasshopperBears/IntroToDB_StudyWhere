@@ -1,7 +1,7 @@
 # -- coding: utf-8 --
 
 from werkzeug.security import generate_password_hash, check_password_hash
-from sqlalchemy import *
+from sqlalchemy import Column, Integer, String, ForeignKey, TIME, DATETIME, TIMESTAMP
 from sqlalchemy.orm import relationship, backref
 from app.database import Base
 from flask_login import UserMixin
