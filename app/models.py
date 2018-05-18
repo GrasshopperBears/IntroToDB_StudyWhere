@@ -1,6 +1,7 @@
 # -- coding: utf-8 --
 
 from sqlalchemy import *
+from sqlalchemy.orm import relationship, backref
 from app.database import Base
 
 class User(Base):
@@ -55,6 +56,9 @@ class Location(Base):
     available_end_weekday = Column(TIME)
     available_begin_weekend = Column(TIME)
     available_end_weekend = Column(TIME)
+
+    building = relationship("Building", backref = "locations")
+    category = relationship("Category", backref = "locations")
 
     def __init__(self, number=None, name=None, code=None, category_number=None, abw = None,
                     aew = None, a_b_end = None, a_e_end = None):
@@ -146,7 +150,7 @@ class Review(Base):
     comment = Column(String(300))
     timestamp = Column(TIMESTAMP, unique=True)
 
-    def __init__(review_number=None, user_id=None, location_number=None, like_score=None,
+    def __init__(self, review_number=None, user_id=None, location_number=None, like_score=None,
             crowded_score=None, comment=None, timestamp=None):
             self.review_number = review_number
             self.user_id = user_id

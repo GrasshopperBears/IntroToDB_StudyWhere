@@ -1,30 +1,28 @@
-{% extends "base.html" %}
+{% extends "base2.html" %}
 
 {% block content %}
 
   <div class="row">
     <div class="samplebox col-sm-8 offset-sm-2 align-self-center">
       <h1>{{ title }}</h1>
-      <form class="form-inline">
-        <select class="form-control form-control-sm" id="filter-type">
-          <option value="building">건물</option>
-          <option value="location-type">종류</option>
-        </select>
-        <label for="filter-type">별로 보기</label>
+      <form class="form-inline" method="POST">
+        {{ form.filter_type(class = 'form-control form-control-sm') }}
+        {{ form.filter_type.label }}
       </form>
     </div>
   </div>
   <div class="row">
     <div class="samplebox col-sm-8 offset-sm-2">
-      {% if filter == 'building' %}
+      {% if form.filter_type.data == 'building' %}
 
         {% for building_code, loc_list in locations|groupby('building_code') %}
 
           <section class="location-group-info">
-            <h2>{{ loc_list[0].building_name ~ ' (' ~ building_code ~ ')' }}</h2>
+            <h2>{{ loc_list[0].building.building_name ~ ' (' ~ building_code ~ ')' }}</h2>
             <div class="location-group-info__studylocations">
               {% for location in loc_list %}
-                <a href="{{ url_for('locations', location_id = location.id) }}">{{ location.name }}</a>{{ if not loop.last }},{{ endif }}
+                <a href="">{{ location.location_name }}</a>
+                {%- if not loop.last %},{% endif %}
               {% endfor %}
             </div>
           </section>
@@ -33,13 +31,14 @@
 
       {% else %}
       
-        {% for type, loc_list in locations|groupby('type') %}
+        {% for category_number, loc_list in locations|groupby('category_number') %}
 
           <section class="location-group-info">
-            <h2>{{ type }}</h2>
+            <h2>{{ loc_list[0].category.type }}</h2>
             <div class="location-group-info__studylocations">
               {% for location in loc_list %}
-                <a href="{{ url_for('locations', location_id = location.id) }}">{{ location.name }}</a> ({{ loc_list[0].building_name ~ ' (' ~ building_code ~ ')' }}){{ if not loop.last }},{{ endif }}
+                <a href="">{{ location.location_name }}</a> ({{ location.building.building_name ~ ' (' ~ location.building_code ~ ')' }})
+                {%- if not loop.last %},{% endif %}
               {% endfor %}
             </div>
           </section>
@@ -50,4 +49,17 @@
     </div>
   </div>
 
-  {% endblock %}
+{% endblock %}
+
+
+{% block scripts %}
+
+  <script>
+    $(function () {
+      $('#{{ form.filter_type.id }}').change(function () {
+        $(this).closest('form').submit();
+      });
+    });
+  </script>
+
+{% endblock %}

@@ -32,3 +32,7 @@ class registerForm(FlaskForm):
     terms = BooleanField('이용 약관에 동의합니다.', validators=[DataRequired('약관에 동의해주세요.')])
     submit = SubmitField('가입')
 
+
+class LocationListFilterForm(FlaskForm):
+    """공부 장소 목록을 보여주는 페이지에서, 공부 장소 목록을 분류하는 방법을 선택하는 폼"""
+    filter_type = SelectField('별로 보기', default = 'building', choices = [('building', '건물'), ('location-type', '종류')])
