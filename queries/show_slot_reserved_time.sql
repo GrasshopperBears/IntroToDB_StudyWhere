@@ -1,0 +1,1 @@
+SELECT begin_date, end_date FROM reservation WHERE reserve_slot = slot_number;

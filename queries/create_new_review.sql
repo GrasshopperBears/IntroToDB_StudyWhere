@@ -1,0 +1,1 @@
+INSERT INTO review VALUES (max_review_number, 'user_id', location_number, like_score, crowded_score, 'comment', timestamp);

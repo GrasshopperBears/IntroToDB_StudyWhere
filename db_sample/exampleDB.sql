@@ -35,7 +35,7 @@ CREATE TABLE `building` (
 
 LOCK TABLES `building` WRITE;
 /*!40000 ALTER TABLE `building` DISABLE KEYS */;
-INSERT INTO `building` VALUES ('E11','창의학습관'),('E4','KI빌딩'),('E6','자연과학동'),('E9','학술문화관'),('N1','김병호, 김삼열 IT융합 빌딩'),('N10','교양분관'),('N11','학생식당'),('N13-2','장영신 학생회관'),('N4','인문사회과학부동'),('N7','기계공학동'),('W1','응용공학동'),('W8','교육지원동');
+INSERT INTO `building` VALUES ('E11','창의학습관'),('E3','정보전자공학동'),('E4','KI빌딩'),('E6','자연과학동'),('E9','학술문화관'),('N1','김병호, 김삼열 IT융합 빌딩'),('N10','교양분관'),('N11','학생식당'),('N13-2','장영신 학생회관'),('N4','인문사회과학부동'),('N7','기계공학동'),('W1','응용공학동'),('W2','서측 학생회관'),('W8','교육지원동');
 /*!40000 ALTER TABLE `building` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -93,7 +93,7 @@ CREATE TABLE `location` (
 
 LOCK TABLES `location` WRITE;
 /*!40000 ALTER TABLE `location` DISABLE KEYS */;
-INSERT INTO `location` VALUES (1,'교양분관 1층','N10',3,'00:00:00','23:59:59','00:00:00','23:59:59'),(2,'교양분관 1층 세미나실','N10',4,'00:00:00','23:59:59','00:00:00','23:59:59'),(3,'교양분관 2층 열람실','N10',2,'00:00:00','23:59:59','00:00:00','23:59:59'),(4,'인문사회과학부동 1층','N4',3,'00:00:00','23:59:59','00:00:00','23:59:59'),(5,'뚜레쥬르','E6',1,'07:00:00','23:00:00','07:00:00','22:00:00'),(6,'투썸플레이스','E6',1,'07:00:00','23:00:00','07:00:00','23:00:00'),(7,'던킨도너츠','E6',1,'07:00:00','23:00:00','07:00:00','23:00:00'),(8,'카페 오가다','E6',1,'08:30:00','21:30:00','08:30:00','21:30:00'),(9,'카페 그랑','E6',1,'08:30:00','20:00:00','10:00:00','19:30:00'),(10,'헨델과 그레텔','E6',1,'08:00:00','23:00:00','08:00:00','22:00:00'),(11,'망고식스','E6',1,'08:30:00','21:30:00','10:30:00','18:00:00'),(12,'커피빈','E6',1,'09:00:00','22:30:00','09:00:00','22:30:00'),(13,'도서관 자유석','E9',3,'09:00:00','23:59:59','13:00:00','23:59:59'),(14,'도서관 한방향 열람실','E9',2,'09:00:00','23:59:59','13:00:00','23:59:59'),(15,'신학관 1,2층','N13-2',3,'00:00:00','23:59:59','00:00:00','23:59:59'),(16,'문화관 자유석','E9',3,'00:00:00','23:59:59','00:00:00','23:59:59'),(17,'문화관 콜라보레이션룸','E9',4,'00:00:00','23:59:59','00:00:00','23:59:59'),(18,'도서관 세미나실','E9',4,'09:00:00','23:59:59','13:00:00','23:59:59'),(20,'KI 빌딩 세미나실','E4',4,'00:00:00','23:59:59','00:00:00','23:59:59');
+INSERT INTO `location` VALUES (1,'교양분관 1층','N10',3,'00:00:00','23:59:59','00:00:00','23:59:59'),(2,'교양분관 1층 세미나실','N10',4,'00:00:00','23:59:59','00:00:00','23:59:59'),(3,'교양분관 2층 열람실','N10',2,'00:00:00','23:59:59','00:00:00','23:59:59'),(4,'인문사회과학부동 1층','N4',3,'00:00:00','23:59:59','00:00:00','23:59:59'),(5,'뚜레쥬르','E6',1,'07:00:00','23:00:00','07:00:00','22:00:00'),(6,'투썸플레이스','N1',1,'07:00:00','23:00:00','07:00:00','23:00:00'),(7,'던킨도너츠','E3',1,'07:00:00','23:00:00','07:00:00','23:00:00'),(8,'카페 오가다','E9',1,'08:30:00','21:30:00','08:30:00','21:30:00'),(9,'카페 그랑','N11',1,'08:30:00','20:00:00','10:00:00','19:30:00'),(10,'헨델과 그레텔','N7',1,'08:00:00','23:00:00','08:00:00','22:00:00'),(11,'망고식스','E4',1,'08:30:00','21:30:00','10:30:00','18:00:00'),(12,'커피빈','W2',1,'09:00:00','22:30:00','09:00:00','22:30:00'),(13,'도서관 자유석','E9',3,'09:00:00','23:59:59','13:00:00','23:59:59'),(14,'도서관 한방향 열람실','E9',2,'09:00:00','23:59:59','13:00:00','23:59:59'),(15,'신학관 1,2층','N13-2',3,'00:00:00','23:59:59','00:00:00','23:59:59'),(16,'문화관 자유석','E9',3,'00:00:00','23:59:59','00:00:00','23:59:59'),(17,'문화관 콜라보레이션룸','E9',4,'00:00:00','23:59:59','00:00:00','23:59:59'),(18,'도서관 세미나실','E9',4,'09:00:00','23:59:59','13:00:00','23:59:59'),(20,'KI 빌딩 세미나실','E4',4,'00:00:00','23:59:59','00:00:00','23:59:59');
 /*!40000 ALTER TABLE `location` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -107,18 +107,18 @@ DROP TABLE IF EXISTS `reservation`;
 CREATE TABLE `reservation` (
   `reservation_id` int(11) NOT NULL,
   `reserve_slot` int(11) NOT NULL,
-  `user_id` varchar(15) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `begin_date` datetime NOT NULL,
   `end_date` datetime NOT NULL,
   `num_people` int(11) NOT NULL,
   `reservation_purpose` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`reservation_id`),
-  KEY `fk_RESERVATION_USER1_idx` (`user_id`),
   KEY `fk_RESERVATION_SLOT1_idx` (`reserve_slot`),
   KEY `begin_date_index` (`begin_date`),
   KEY `end_date_index` (`end_date`),
+  KEY `fk_reservation_user1_idx` (`user_id`),
   CONSTRAINT `fk_RESERVATION_SLOT1` FOREIGN KEY (`reserve_slot`) REFERENCES `slot` (`slot_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_RESERVATION_USER1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_reservation_user1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -140,7 +140,7 @@ DROP TABLE IF EXISTS `review`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `review` (
   `review_number` int(11) NOT NULL,
-  `user_id` varchar(15) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `location_number` int(11) NOT NULL,
   `like_score` int(11) DEFAULT NULL,
   `crowded_score` int(11) DEFAULT NULL,
@@ -148,9 +148,9 @@ CREATE TABLE `review` (
   `timestamp` datetime NOT NULL,
   PRIMARY KEY (`review_number`),
   KEY `fk_REVIEW_LOCATION1_idx` (`location_number`),
-  KEY `fk_REVIEW_USER1_idx` (`user_id`),
+  KEY `fk_review_user1_idx` (`user_id`),
   CONSTRAINT `fk_REVIEW_LOCATION1` FOREIGN KEY (`location_number`) REFERENCES `location` (`location_number`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_REVIEW_USER1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_review_user1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -160,7 +160,7 @@ CREATE TABLE `review` (
 
 LOCK TABLES `review` WRITE;
 /*!40000 ALTER TABLE `review` DISABLE KEYS */;
-INSERT INTO `review` VALUES (1,'user',1,1,NULL,'사람들이 왔다갔다 해서 시끄러워요','2018-05-13 19:43:00');
+INSERT INTO `review` VALUES (1,1,1,1,NULL,'사람들이 왔다갔다 해서 시끄러워요','2018-05-13 19:43:00');
 /*!40000 ALTER TABLE `review` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -229,11 +229,12 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` varchar(15) NOT NULL,
   `user_name` varchar(10) NOT NULL,
   `password_hash` varchar(150) NOT NULL,
-  PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -242,7 +243,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('user','관리자','password');
+INSERT INTO `user` VALUES (1,'user','관리자','pbkdf2:sha256:50000$gD8jESrh$ec8e5d1aba337866b1a4df9e47c081f8e768a57682c69806ca1b03efb17ff0dc');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -263,4 +264,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-13 22:52:25
+-- Dump completed on 2018-05-18 15:43:48

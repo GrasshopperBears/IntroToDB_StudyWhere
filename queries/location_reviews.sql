@@ -1,0 +1,1 @@
+SELECT like_score, crowded_score, comment, timestamp FROM review WHERE location_number = num;

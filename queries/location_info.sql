@@ -1,0 +1,1 @@
+SELECT location_name, category_number, available_begin_weekday, available_end_weekday, available_begin_weekend, available_end_weekend FROM location where building_code = 'code';

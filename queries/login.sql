@@ -1,0 +1,1 @@
+SELECT user_id, password_hash FROM user WHERE user_id = 'input';
