@@ -6,8 +6,8 @@
 	</title>
 	<style type="text/css">
 		body{
-			font-size: 20pt
-			font-family: 'times new roman'
+			font-size: 15pt
+			font-family: '궁서체'
 		}
 	</style>
 </head>
@@ -15,10 +15,18 @@
 			{% for i in range(5) %}
             <br>
             {% endfor %}
-	<h1> Where2Go - 당신을 위한 공부 공간을 찾아보세요! </h1>
+    {% if not current_user.is_anonymous %}
+    <h1>Hi, {{ current_user.user_id }}!</h1>
+	{% else %}
+    <h1>로그인이 필요합니다.</h1>
+    {% endif %}
+    <h1> Where2Go - 당신을 위한 공부 공간을 찾아보세요! </h1>
 	<div>
-                    <a href="/login">Login</a><br>
-                    <a href="/logout">Logout</a><br>
+                    {% if current_user.is_anonymous %}
+                    <a href="{{ url_for('login') }}">Login</a>
+                    {% else %}
+                    <a href="{{ url_for('logout') }}">Logout</a>
+                    {% endif %} <br>
                     <a href="/register">Register</a><br>
                     <a href="/review">Review</a><br>
 

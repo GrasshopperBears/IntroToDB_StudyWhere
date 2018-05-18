@@ -61,7 +61,9 @@ def logout():
     logout_user()
     return redirect("/")
 
-@app.route('/location', methods=['GET','POST'])
+@app.route('/locations', methods=['GET','POST'])
 def location():
     location = Location.search_locations_by_category(0)
     return render_template('locations.html', title='Locations', location = location)
+
+
