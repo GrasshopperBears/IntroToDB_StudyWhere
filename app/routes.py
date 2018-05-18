@@ -69,7 +69,7 @@ def logout():
 
 
 @app.route('/locations', methods=['GET','POST'])
-def location():
+def locations():
     """모든 공부 장소의 목록을 필터로 분류하여 보여준다."""
     form = LocationListFilterForm()
     
