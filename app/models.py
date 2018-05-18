@@ -1,22 +1,33 @@
 # -- coding: utf-8 --
 
+from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import *
 from app.database import Base
+from flask_login import UserMixin
+from app import login
 
-class User(Base):
+class User(UserMixin,Base):
     __tablename__ = 'USER'
     __table_args__ = {'mysql_collate': ' utf8_general_ci'}
-    user_id = Column(String(15), primary_key=True, unique=True)
+    id = Column(Integer, primary_key=True, unique=True)
+    user_id = Column(String(15), unique=True)
     user_name = Column(String(10), unique = True)
     password_hash = Column(String(150), unique=True)
     
-    def __init__(self, user_id = None, name=None, password=None):
+    def __init__(self, user_id = None, user_name=None, password = None):
         self.user_id =user_id 
-        self.name = name
-        self.password_hash = password
+        self.user_name = user_name
+        self.password_hash = generate_password_hash(password)
 
     def __repr__(self):
         return '<User: id is %r, name is %r>' % (self.user_id, self.user_name)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))
 
 class Building(Base):
     __tablename__ = 'BUILDING'
@@ -70,6 +81,9 @@ class Location(Base):
     def __repr__(self):
         return '<Location_name = %r, Location_number = %r, Buildig_code = %r>' %(self.location_name, self.location_number, 
             self.building_code)
+
+    def search_locations_by_category(category_n):
+        return Location.query.filter_by(category_number = category_n).all()
 
 
 class Slottypes(Base):

@@ -9,7 +9,7 @@ from sqlalchemy import *
 
 @app.route('/')
 def home():
-    return render_template('home.html', title='Exp')
+    return render_template('home.html', title='Home')
 
 
 @app.route('/login', methods=['GET', 'POST'])
