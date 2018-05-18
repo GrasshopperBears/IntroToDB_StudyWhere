@@ -1,5 +1,6 @@
 #Python related
 __pycache__/
+app/__pycache__/
 
 #VS Code editor
 .vscode/

@@ -1,10 +1,16 @@
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request, send_from_directory
 from app import app
-from app.forms import LoginForm, reviewForm, registerForm
+from app.forms import LoginForm, reviewForm, registerForm, LocationListFilterForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.database import db_session
 from app.models import *
 from sqlalchemy import *
+
+
+# @app.route('/static/<path:path>')
+# def send_static_files(path):
+#     """정적 파일(이미지, CSS, JS 등)을 제공한다."""
+#     return send_from_directory('/static/', path)
 
 
 @app.route('/')
@@ -56,14 +62,19 @@ def register():
 
     return render_template('register.html', title='Register', form=register)
 
+
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect("/")
 
+
 @app.route('/locations', methods=['GET','POST'])
 def location():
-    location = Location.search_locations_by_category(0)
-    return render_template('locations.html', title='Locations', location = location)
+    """모든 공부 장소의 목록을 필터로 분류하여 보여준다."""
+    form = LocationListFilterForm()
+    
+    locations = Location.query.all()
 
+    return render_template('locations.html', title='Locations', form = form, locations = locations)
 

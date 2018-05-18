@@ -38,3 +38,7 @@ class registerForm(FlaskForm):
         if user is not None:
             raise ValidationError('이미 이 아이디를 가진 사용자가 존재합니다.')
 
+
+class LocationListFilterForm(FlaskForm):
+    """공부 장소 목록을 보여주는 페이지에서, 공부 장소 목록을 분류하는 방법을 선택하는 폼"""
+    filter_type = SelectField('별로 보기', default = 'building', choices = [('building', '건물'), ('location-type', '종류')])
