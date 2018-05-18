@@ -80,7 +80,25 @@ def locations():
 @app.route('/locations/<location_id>', methods=['GET','POST'])
 def study_location(location_id):
     location = Location.query.filter_by(location_number = location_id).first()
-    return render_template('location.html', title=location.location_name, location = location)
+    
+    reviews_per_page = 5
+    current_review = request.args.get('current_review', 0)
+    review_pages = [ i for i in range(0, len(location.reviews), reviews_per_page) ]
+    current_page = current_review // reviews_per_page * reviews_per_page
+    review_pagination = {
+        'current_review': current_review,
+        'reviews_per_page': reviews_per_page,
+        'pages': review_pages,
+        'current_page': current_page
+    }
+    review_pagination['prev_page'] = max(0, current_page - reviews_per_page)
+    if review_pages:
+        review_pagination['next_page'] = min(review_pages[-1], current_page + reviews_per_page)
+    else:
+        review_pagination['next_page'] = 0
+
+    return render_template('location-view.html', title=location.location_name, location = location, review_pagination = review_pagination)
+
 
 @app.route('/locations/<location_id>/comment', methods=['GET','POST'])
 def comment_on_location(location_id):

@@ -164,6 +164,9 @@ class Review(Base):
     comment = Column(String(300))
     timestamp = Column(TIMESTAMP, unique=True)
 
+    user = relationship('User', backref = 'reviews')
+    location = relationship('Location', backref = 'reviews')
+
     def __init__(self, review_number=None, user_id=None, location_number=None, like_score=None,
             crowded_score=None, comment=None, timestamp=None):
             self.review_number = review_number
