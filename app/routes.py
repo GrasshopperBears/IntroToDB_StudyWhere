@@ -77,8 +77,10 @@ def locations():
 
     return render_template('locations.html', title='Locations', form = form, locations = locations)
 
+
 @app.route('/locations/<location_id>', methods=['GET','POST'])
 def view_location(location_id):
+    """한 공부 장소에 대한 평점과 한줄평의 목록을 보여준다."""
     location = Location.query.filter_by(location_number = location_id).first()
 
     reviews_per_page = 5
@@ -103,6 +105,7 @@ def view_location(location_id):
 @app.route('/locations/<location_id>/review', methods=['GET','POST'])
 @login_required
 def review_location(location_id):
+    """한 공부 장소에 대한 평점과 한줄평을 남기거나, 기존의 평점/한줄평을 수정/삭제할 수 있다."""
     from datetime import datetime
 
     #user = User.query.filter_by(user_id = )
