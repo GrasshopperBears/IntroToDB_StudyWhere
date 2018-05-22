@@ -137,6 +137,7 @@ class Slot(Base):
     minimum_capacity = Column(Integer)
 
     slot_type = relationship('SlotType')
+    location  = relationship('Location', backref = 'slots')
     
     def __init__(self, slot_id=None, slot_name=None, slot_location=None, 
         slot_type_id=None, max_reserve_time=None, minimum_capacity=None):
