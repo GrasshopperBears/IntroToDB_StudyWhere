@@ -109,12 +109,14 @@ def review_location(location_id):
 
     location = Location.query.filter_by(location_number = location_id).first()                  #TODO 존재하지 않는 location일 경우 처리
     my_review = Review.query.filter_by(user_id = current_user.get_id(), location_number = location_id).first()
-    if not my_review:
-        my_review = Review(user_id = current_user.get_id(), location_number = location_id)
 
     form = ReviewForm()
     if request.method == 'POST':
         if form.submit_save.data:
+            # 이미 저장한 review가 없으면 새로 생성한다. 
+            if not my_review:
+                my_review = Review(user_id = current_user.get_id(), location_number = location_id)
+            
             my_review.like_score    = form.like_score.data
             my_review.crowded_score = form.crowded_score.data
             my_review.comment       = form.comment.data
@@ -123,14 +125,17 @@ def review_location(location_id):
             db_session.add(my_review)
             db_session.commit()
         elif form.submit_delete:
-            db_session.delete(my_review)
-            db_session.commit()
+            if my_review:
+                db_session.delete(my_review)
+                db_session.commit()
 
         return redirect(url_for('view_location', location_id = location_id))
     
-    form.comment.data       = my_review.comment
-    form.like_score.data    = str(my_review.like_score)
-    form.crowded_score.data = str(my_review.crowded_score)
+    # 저장한 리뷰가 있으면 그 내용을 불러온다.
+    if my_review:
+        form.comment.data       = my_review.comment
+        form.like_score.data    = str(my_review.like_score)
+        form.crowded_score.data = str(my_review.crowded_score)
 
     return render_template('location-review.html', title=location.location_name, form = form)
 
