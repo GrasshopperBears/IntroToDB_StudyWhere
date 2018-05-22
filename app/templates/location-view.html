@@ -11,6 +11,7 @@
     {% if is_reservable %}
       <div>현재 이용자 수: {#{ num_current_reservations }#} / {#{ num_max_reservations }#}명 (<a href="{{ url_for('choose_slot_for_location', location_id = location.location_number) }}">예약하기</a>)</div>
     {% endif %}
+    <div><a href="{{ url_for('review_location', location_id = location.location_number) }}">평가하기</a></div>
   </section>
 
   <section class="samplebox">

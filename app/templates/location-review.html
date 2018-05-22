@@ -1,0 +1,54 @@
+{% extends "base2.html" %}
+
+{% block content %}
+
+  <section class="samplebox">
+    <h1>{{ title }}</h1>
+    <form method="POST">
+      <div class="form-group row">
+        <div class="col-form-label col-sm-2">만족도</div>
+        <div class="col-sm-10 btn-group btn-group-toggle" data-toggle="buttons">
+          {% for subfield in form.like_score %}
+            <label class="btn btn-outline-secondary">
+              {{ subfield }}
+              {{ loop.index }}
+            </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-form-label col-sm-2">혼잡도</div>
+        <div class="col-sm-10 btn-group btn-group-toggle" data-toggle="buttons">
+          {% for subfield in form.crowded_score %}
+            <label class="btn btn-outline-secondary">
+              {{ subfield }}
+              {{ loop.index }}
+            </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="form-group">
+        {{ form.comment.label }}
+        {{ form.comment(class = "form-control", rows = "4") }}
+      </div>
+
+      <div class="form-group float-right">
+        {{ form.submit_save(class = 'btn btn-primary') }}
+        {{ form.submit_delete(class = 'btn btn-secondary') }}
+      </div>
+    </form>
+  </section>
+
+{% endblock %}
+
+{% block scripts %}
+
+  <script>
+    $('button[value="delete"]').click(function () {
+      return confirm("한줄평을 삭제하시겠습니까?");
+    });
+  </script>
+
+  {% endblock %}

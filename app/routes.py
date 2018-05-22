@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for, request, send_from_directory
 from app import app
-from app.forms import LoginForm, reviewForm, registerForm, LocationListFilterForm
+from app.forms import LoginForm, reviewFormOld, registerForm, LocationListFilterForm, ReviewForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.database import db_session
 from app.models import *
@@ -36,7 +36,7 @@ def login():
 @app.route('/review', methods=['GET', 'POST'])
 @login_required
 def review():
-    review = reviewForm()
+    review = reviewFormOld()
     if review.validate_on_submit():
         flash('Review requested for ReviewName {}, like_score={}'.format(
             review.reviewname.data, review.like_score.data))
@@ -72,15 +72,15 @@ def logout():
 def locations():
     """모든 공부 장소의 목록을 필터로 분류하여 보여준다."""
     form = LocationListFilterForm()
-    
+
     locations = Location.query.all()
 
     return render_template('locations.html', title='Locations', form = form, locations = locations)
 
 @app.route('/locations/<location_id>', methods=['GET','POST'])
-def study_location(location_id):
+def view_location(location_id):
     location = Location.query.filter_by(location_number = location_id).first()
-    
+
     reviews_per_page = 5
     current_review = request.args.get('current_review', 0)
     review_pages = [ i for i in range(0, len(location.reviews), reviews_per_page) ]
@@ -100,10 +100,37 @@ def study_location(location_id):
     return render_template('location-view.html', title=location.location_name, location = location, review_pagination = review_pagination)
 
 
-@app.route('/locations/<location_id>/comment', methods=['GET','POST'])
-def comment_on_location(location_id):
-    location = Location.query.filter_by(location_number = location_id).first()
-    return render_template('location-comment.html', title=location.location_name, location = location)
+@app.route('/locations/<location_id>/review', methods=['GET','POST'])
+@login_required
+def review_location(location_id):
+    from datetime import datetime
+
+    location = Location.query.filter_by(location_number = location_id).first()                  #TODO 존재하지 않는 location일 경우 처리
+    my_review = Review.query.filter_by(user_id = '1', location_number = location_id).first() #TODO 실제 username 사용하기
+    if not my_review:
+        my_review = Review(user_id = '1', location_number = location_id)                     #TODO 실제 username 사용하기
+
+    form = ReviewForm()
+    if request.method == 'POST':
+        if form.submit_save.data:
+            my_review.like_score    = form.like_score.data
+            my_review.crowded_score = form.crowded_score.data
+            my_review.comment       = form.comment.data
+            my_review.timestamp     = datetime.now()
+            my_review.review_number = 2                                                         #TODO Use new review number
+            db_session.add(my_review)
+            db_session.commit()
+        elif form.submit_delete:
+            my_review.delete()
+
+        return redirect(url_for('view_location', location_id = location_id))
+    
+    form.comment.data       = my_review.comment
+    form.like_score.data    = my_review.like_score
+    form.crowded_score.data = my_review.crowded_score
+
+    return render_template('location-review.html', title=location.location_name, form = form)
+
 
 @app.route('/locations/<location_id>/reservations')
 def choose_slot_for_location(location_id):
