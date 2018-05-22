@@ -6,8 +6,8 @@
     <h1>{{ title }}</h1>
     <div>이용 시간 (평일): {{ location.available_begin_weekday }} ~ {{ location.available_end_weekday }}</div>
     <div>이용 시간 (주말): {{ location.available_begin_weekend }} ~ {{ location.available_end_weekend }}</div>
-    <div>만족도: {#{ '(평가해 주세요)' if happiness_rating == 0 else happiness_rating }} / {{ max_happiness_rating }#}</div>
-    <div>혼잡도: {#{ '(평가해 주세요)' if crowded_rating == 0 else crowded_rating }} / {{ max_crowded_rating }}#}</div>
+    <div>만족도: {{ location.get_avg_like_score()|default('(평가해 주세요)', true) }}</div>
+    <div>혼잡도: {{ location.get_avg_crowded_score()|default('(평가해 주세요)', true) }}</div>
     {% if is_reservable %}
       <div>현재 이용자 수: {#{ num_current_reservations }#} / {#{ num_max_reservations }#}명 (<a href="{{ url_for('choose_slot_for_location', location_id = location.location_number) }}">예약하기</a>)</div>
     {% endif %}
