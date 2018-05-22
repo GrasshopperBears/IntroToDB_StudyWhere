@@ -108,9 +108,9 @@ def review_location(location_id):
     #user = User.query.filter_by(user_id = )
 
     location = Location.query.filter_by(location_number = location_id).first()                  #TODO 존재하지 않는 location일 경우 처리
-    my_review = Review.query.filter_by(user_id = current_user.get_id(), location_number = location_id).first() #TODO 실제 username 사용하기
+    my_review = Review.query.filter_by(user_id = current_user.get_id(), location_number = location_id).first()
     if not my_review:
-        my_review = Review(user_id = current_user.get_id(), location_number = location_id)                     #TODO 실제 username 사용하기
+        my_review = Review(user_id = current_user.get_id(), location_number = location_id)
 
     form = ReviewForm()
     if request.method == 'POST':
