@@ -9,7 +9,10 @@
         <div class="col-form-label col-sm-2">만족도</div>
         <div class="col-sm-10 btn-group btn-group-toggle" data-toggle="buttons">
           {% for subfield in form.like_score %}
-            {{ subfield.label(class = 'btn btn-outline-secondary' + (' active' if subfield.checked else ''), text = subfield() + subfield.label.text) }}
+            <label class="btn btn-outline-secondary {{ 'active' if subfield.checked else '' }}">
+              {{ subfield }}
+              <img class="rating-icon" alt="{{ subfield.label.text }}" title="{{ subfield.label.text }}" src="/static/images/like-{{ loop.index0 }}.png">
+            </label>
           {% endfor %}
         </div>
       </div>
@@ -18,7 +21,10 @@
         <div class="col-form-label col-sm-2">혼잡도</div>
         <div class="col-sm-10 btn-group btn-group-toggle" data-toggle="buttons">
           {% for subfield in form.crowded_score %}
-            {{ subfield.label(class = 'btn btn-outline-secondary' + (' active' if subfield.checked else ''), text = subfield() + subfield.label.text) }}
+            <label class="btn btn-outline-secondary {{ 'active' if subfield.checked else '' }}">
+              {{ subfield }}
+              <img class="rating-icon" alt="{{ subfield.label.text }}" title="{{ subfield.label.text }}" src="/static/images/crowd-{{ loop.index0 }}.png">
+            </label>
           {% endfor %}
         </div>
       </div>

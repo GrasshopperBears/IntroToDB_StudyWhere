@@ -14,3 +14,4 @@ StudyWhere project of Team 'SoftWhere'
 
 # 사용하는 이미지
 * `crowd-1.png`, `crowd-2.png`, `crowd-3.png`: By [Oksana Latysheva](https://thenounproject.com/latyshevaoksana/)
+* `like-0.png`, `like-1.png`, `like-2.png`, `like-3.png`, `crowd-0.png`: By [shashank singh](https://thenounproject.com/rshashank19/)
