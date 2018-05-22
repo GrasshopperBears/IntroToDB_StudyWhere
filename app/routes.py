@@ -121,7 +121,6 @@ def review_location(location_id):
             my_review.crowded_score = form.crowded_score.data
             my_review.comment       = form.comment.data
             my_review.timestamp     = datetime.now()
-            my_review.review_number = 2                                                         #TODO Use new review number
             db_session.add(my_review)
             db_session.commit()
         elif form.submit_delete:
