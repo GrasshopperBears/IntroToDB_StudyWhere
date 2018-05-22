@@ -1,6 +1,6 @@
--- MySQL dump 10.13  Distrib 5.7.22, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.22, for Win32 (AMD64)
 --
--- Host: localhost    Database: wheretostudy
+-- Host: 127.0.0.1    Database: wheretostudy
 -- ------------------------------------------------------
 -- Server version	5.7.22-log
 
@@ -47,10 +47,10 @@ DROP TABLE IF EXISTS `category`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `category` (
-  `category_number` int(11) NOT NULL,
+  `category_number` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(20) NOT NULL,
   PRIMARY KEY (`category_number`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -71,7 +71,7 @@ DROP TABLE IF EXISTS `location`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `location` (
-  `location_number` int(11) NOT NULL,
+  `location_number` int(11) NOT NULL AUTO_INCREMENT,
   `location_name` varchar(30) DEFAULT NULL,
   `building_code` varchar(6) NOT NULL,
   `category_number` int(11) NOT NULL,
@@ -84,7 +84,7 @@ CREATE TABLE `location` (
   KEY `fk_LOCATION_BUILDING1_idx` (`building_code`),
   CONSTRAINT `fk_LOCATION_BUILDING1` FOREIGN KEY (`building_code`) REFERENCES `building` (`building_number`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_LOCATION_CATEGORY` FOREIGN KEY (`category_number`) REFERENCES `category` (`category_number`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -105,7 +105,7 @@ DROP TABLE IF EXISTS `reservation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `reservation` (
-  `reservation_id` int(11) NOT NULL,
+  `reservation_id` int(11) NOT NULL AUTO_INCREMENT,
   `reserve_slot` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `begin_date` datetime NOT NULL,
@@ -139,7 +139,7 @@ DROP TABLE IF EXISTS `review`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `review` (
-  `review_number` int(11) NOT NULL,
+  `review_number` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `location_number` int(11) NOT NULL,
   `like_score` int(11) DEFAULT NULL,
@@ -151,7 +151,7 @@ CREATE TABLE `review` (
   KEY `fk_review_user1_idx` (`user_id`),
   CONSTRAINT `fk_REVIEW_LOCATION1` FOREIGN KEY (`location_number`) REFERENCES `location` (`location_number`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_review_user1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -172,7 +172,7 @@ DROP TABLE IF EXISTS `slot`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `slot` (
-  `slot_id` int(11) NOT NULL,
+  `slot_id` int(11) NOT NULL AUTO_INCREMENT,
   `slot_name` varchar(50) NOT NULL,
   `slot_location` int(11) NOT NULL,
   `slot_type` int(11) NOT NULL,
@@ -183,7 +183,7 @@ CREATE TABLE `slot` (
   KEY `fk_SLOT_LOCATION1_idx` (`slot_location`),
   CONSTRAINT `fk_SLOT_LOCATION1` FOREIGN KEY (`slot_location`) REFERENCES `location` (`location_number`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_SLOT_SLOTTYPES1` FOREIGN KEY (`slot_type`) REFERENCES `slottypes` (`slot_number`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -204,11 +204,11 @@ DROP TABLE IF EXISTS `slottypes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `slottypes` (
-  `slot_number` int(11) NOT NULL,
+  `slot_number` int(11) NOT NULL AUTO_INCREMENT,
   `slot_type` varchar(30) NOT NULL,
   `maximum_capacity` int(11) NOT NULL,
   PRIMARY KEY (`slot_number`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -264,4 +264,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-18 15:43:48
+-- Dump completed on 2018-05-22 23:52:28
