@@ -203,13 +203,13 @@ class Review(Base):
     like_score_to_text = ('선택하지 않음', '싫어요', '보통', '좋아요')
     def get_like_score_text(self):
         try:
-            return type(self).like_score_to_text[self.like_score]
+            return type(self).like_score_to_text[self.like_score or 0]
         except IndexError:
             return type(self).like_score_to_text[0]
 
     crowded_score_to_text = ('선택하지 않음', '한산함', '보통', '많음')
     def get_crowded_score_text(self):
         try:
-            return type(self).crowded_score_to_text[self.crowded_score]
+            return type(self).crowded_score_to_text[self.crowded_score or 0]
         except IndexError:
             return type(self).crowded_score_to_text[0]
