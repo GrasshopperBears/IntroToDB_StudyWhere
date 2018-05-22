@@ -109,21 +109,22 @@ class Location(Base):
             return None
 
 
-class Slottypes(Base):
+class SlotType(Base):
+    """슬롯의 종류를 지정하는 테이블의 레코드"""
     __tablename__= 'SLOTTYPES'
     __table_args__ = {'mysql_collate': ' utf8_general_ci'}
-    slot_number = Column(Integer, unique=True, primary_key=True)
-    slot_type = Column(String(30))
+    id = Column('slot_number', Integer, unique = True, primary_key = True)
+    name = Column('slot_type', String(30))
     maximum_capacity = Column(Integer)
 
-    def __init__(self, slot_number=None, slot_type=None, 
-        maximum_capacity=None):
-        self.slot_number = slot_number
-        self.slot_type = slot_type
+    def __init__(self, id = None, name = None, maximum_capacity = None):
+        self.id = id
+        self.name = name
         self.maximum_capacity = maximum_capacity
         
     def __repr__(self):
-        return '<Slot type number: %r, Slot type: %r>' % (self.slot_number, self.slot_type)
+        return '<SlotType ID: {!r}, name: {!r}>'.format(self.id, self.name)
+
 
 class Slot(Base):
     __tablename__= 'SLOT'
@@ -131,16 +132,18 @@ class Slot(Base):
     slot_id = Column(Integer, unique=True, primary_key=True)
     slot_name = Column(String(50), unique=True)
     slot_location = Column(Integer, ForeignKey(Location.location_number), unique=True)
-    slot_type = Column(Integer, ForeignKey(Slottypes.slot_number), unique=True)
+    slot_type_id = Column(Integer, ForeignKey(SlotType.id), unique = True)
     max_reserve_time = Column(Integer)
     minimum_capacity = Column(Integer)
+
+    slot_type = relationship('SlotType')
     
     def __init__(self, slot_id=None, slot_name=None, slot_location=None, 
-        slot_type=None, max_reserve_time=None, minimum_capacity=None):
+        slot_type_id=None, max_reserve_time=None, minimum_capacity=None):
         self.slot_id = slot_id
         self.slot_name = slot_name
         self.slot_location= slot_location
-        self.slot_type = slot_type
+        self.slot_type_id = slot_type_id
         self.max_reserve_time = max_reserve_time
         self.minimum_capacity = minimum_capacity
 
