@@ -105,10 +105,12 @@ def view_location(location_id):
 def review_location(location_id):
     from datetime import datetime
 
+    #user = User.query.filter_by(user_id = )
+
     location = Location.query.filter_by(location_number = location_id).first()                  #TODO 존재하지 않는 location일 경우 처리
-    my_review = Review.query.filter_by(user_id = '1', location_number = location_id).first() #TODO 실제 username 사용하기
+    my_review = Review.query.filter_by(user_id = current_user.get_id(), location_number = location_id).first() #TODO 실제 username 사용하기
     if not my_review:
-        my_review = Review(user_id = '1', location_number = location_id)                     #TODO 실제 username 사용하기
+        my_review = Review(user_id = current_user.get_id(), location_number = location_id)                     #TODO 실제 username 사용하기
 
     form = ReviewForm()
     if request.method == 'POST':
@@ -121,7 +123,8 @@ def review_location(location_id):
             db_session.add(my_review)
             db_session.commit()
         elif form.submit_delete:
-            my_review.delete()
+            db_session.delete(my_review)
+            db_session.commit()
 
         return redirect(url_for('view_location', location_id = location_id))
     
