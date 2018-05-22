@@ -9,10 +9,7 @@
         <div class="col-form-label col-sm-2">만족도</div>
         <div class="col-sm-10 btn-group btn-group-toggle" data-toggle="buttons">
           {% for subfield in form.like_score %}
-            <label class="btn btn-outline-secondary">
-              {{ subfield }}
-              {{ loop.index }}
-            </label>
+            {{ subfield.label(class = 'btn btn-outline-secondary' + (' active' if subfield.checked else ''), text = subfield() + subfield.label.text) }}
           {% endfor %}
         </div>
       </div>
@@ -21,10 +18,7 @@
         <div class="col-form-label col-sm-2">혼잡도</div>
         <div class="col-sm-10 btn-group btn-group-toggle" data-toggle="buttons">
           {% for subfield in form.crowded_score %}
-            <label class="btn btn-outline-secondary">
-              {{ subfield }}
-              {{ loop.index }}
-            </label>
+            {{ subfield.label(class = 'btn btn-outline-secondary' + (' active' if subfield.checked else ''), text = subfield() + subfield.label.text) }}
           {% endfor %}
         </div>
       </div>

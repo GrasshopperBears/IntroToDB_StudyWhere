@@ -129,8 +129,8 @@ def review_location(location_id):
         return redirect(url_for('view_location', location_id = location_id))
     
     form.comment.data       = my_review.comment
-    form.like_score.data    = my_review.like_score
-    form.crowded_score.data = my_review.crowded_score
+    form.like_score.data    = str(my_review.like_score)
+    form.crowded_score.data = str(my_review.crowded_score)
 
     return render_template('location-review.html', title=location.location_name, form = form)
 
