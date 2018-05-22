@@ -5,8 +5,8 @@ from app.models import *
 
 
 class LoginForm(FlaskForm):
-    userid = StringField('ID', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    userid = StringField('ID', validators=[DataRequired('ID를 입력해주세요.')])
+    password = PasswordField('Password', validators=[DataRequired('비밀번호를 입력해주세요.')])
     remember_me = BooleanField('Remember_me')
     submit = SubmitField('Sign In')
 
@@ -27,8 +27,8 @@ class reviewFormOld(FlaskForm):
 
 class registerForm(FlaskForm):
     userid = StringField('ID', validators=[DataRequired('ID를 입력해주세요.')])
-    password = PasswordField('비밀번호', validators=[DataRequired()])
-    password_confirm = PasswordField('비밀번호 확인', validators=[DataRequired(), EqualTo('password', message='Passwords must match')])
+    password = PasswordField('비밀번호', validators=[DataRequired('비밀 번호는 필수 항목입니다.')])
+    password_confirm = PasswordField('비밀번호 확인', validators=[DataRequired('비밀번호를 다시 입력해주세요.'), EqualTo('password', message='비밀번호가 일치하지 않습니다.')])
     username = StringField('Username', validators=[DataRequired('이름을 입력해주세요.')])
     terms = BooleanField('이용 약관에 동의합니다.', validators=[DataRequired('약관에 동의해주세요.')])
     submit = SubmitField('가입')
