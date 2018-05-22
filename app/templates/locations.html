@@ -1,4 +1,14 @@
-{% extends "base2.html" %}
+{% extends "base.html" %}
+<div class="container"><div class="row"><div class="col-sm-8 offset-sm-2">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <section class="samplebox flashes"><ul>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul></section>
+      {% endif %}
+    {% endwith %}
 
 {% block content %}
 
@@ -46,7 +56,7 @@
   </section>
 
 {% endblock %}
-
+ </div></div></div>
 
 {% block scripts %}
 

@@ -1,35 +1,14 @@
 
-<html>
-<head>
-	<title>
-		Where2Go - CS360
-	</title>
-	<style type="text/css">
-		body{
-			font-size: 15pt
-			font-family: '궁서체'
-		}
-	</style>
-</head>
-<body style="text-align:center">
-			{% for i in range(5) %}
-            <br>
-            {% endfor %}
-    {% if not current_user.is_anonymous %}
-    <h1>Hi, {{ current_user.user_id }}!</h1>
-	{% else %}
-    <h1>로그인이 필요합니다.</h1>
-    {% endif %}
-    <h1> Where2Go - 당신을 위한 공부 공간을 찾아보세요! </h1>
-	<div>
-                    {% if current_user.is_anonymous %}
-                    <a href="{{ url_for('login') }}">Login</a>
-                    {% else %}
-                    <a href="{{ url_for('logout') }}">Logout</a>
-                    {% endif %} <br>
-                    <a href="/register">Register</a><br>
-                    <a href="/review">Review</a><br>
+{% extends "base.html" %}
+{% block content %}
 
-        </div>
-</body>
-</html>
+    <div class="starter-template">
+            <h1>Where2Go</h1>
+            <br>
+            <p class="lead">공부하기 위한 학내 최적의 공간을 찾아보세요!<br>
+            각 공간의 만족도, 혼잡도를 실시간으로 제공하는 시스템입니다<br>
+            카이스트의 불편한 예약 시스템을 개선하여 제공하였습니다. </p>
+            <p class="mt-5 mb-3 text-muted">&copy; by 강예형, 김창연, 이진우</p>
+          </div>
+
+{% endblock %}

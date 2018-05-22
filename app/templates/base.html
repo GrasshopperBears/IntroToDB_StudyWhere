@@ -1,28 +1,106 @@
-<html>
+<!doctype html>
+<html lang="en">
     <head>
-      {% if title %}
-      <title>{{ title }} - Where2Go</title>
-      {% else %}
-      <title>Where2Go</title>
-      {% endif %}
+        {% if title %}
+        <title>{{ title }} - Where2Go</title>
+        {% else %}
+        <title>Where2Go</title>
+        {% endif %}
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="../../../../favicon.ico">
+
+        <!-- Bootstrap core CSS -->
+        <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom styles for this template -->
+        <link href="starter-template.css" rel="stylesheet">
+        <link rel="stylesheet" href="/static/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="/static/css/bootstrap-datepicker3.css" />
+        <link rel="stylesheet" href="/static/css/studywhere.css" />
     </head>
     <body>
-        <div>Menu: 
-                        <a href="/">Home</a>
-                        <a href="{{ url_for('login') }}">Login</a>
-                        <a href="/register">Register</a>
-                        <a href="{{ url_for('review') }}">review</a><br>
-        </div>
-        <hr>
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
+        <nav class="navbar navbar-dark fixed-top bg-dark shadow navbar-expand-md">
+          <a class="navbar-brand" href="{{url_for('home')}}">Where2Go</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active"><a class="nav-link" href="/">
+                         Home
+                        <span class="sr-only">(current)</span></a>
+                    </li>
+                    
+                    {% if current_user.is_anonymous %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('register') }}">
+                        Register</a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('locations') }}">
+                            Locations</a>
+                    </li>
+                    {% if not current_user.is_anonymous %}
+                    <li class="nav-item">
+                        <a class="nav-link" href='#'>
+                            Reservation</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+            
+          <ul class="navbar-nav px-3">
+            {% if not current_user.is_anonymous %}
+                    <li class="nav-item text-nowrap">
+                        <a class="nav-link" href="{{ url_for('logout') }}">
+                         <span data-feather="users"></span>
+                            Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item text-nowrap">
+                        <a class="nav-link" href="{{ url_for('login') }}">
+                         <span data-feather="users"></span>
+                            Login</a>
+                    </li>
+                    {% endif %}
+          </ul>
+        </nav>
+
+        <main role="main" class="container">
+        
+        <div class="starter-template">
+            {% for i in range(4) %}
+            <br>
             {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
-        {% block content %}{% endblock %}
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+            {% block content %}{% endblock %}
+
+        </div>
+        </main>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../static/js/jquery-slim.min.js"><\/script>')</script>
+    <script src="../static/js/popper.min.js"></script>
+    <script src="../static/js/bootstrap.min.js"></script>
+    <script src="/static/js/jquery.slim.min.js"></script>
+    <script src="/static/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/bootstrap-datepicker.min.js"></script>
+    <script src="/static/js/bootstrap-datepicker.ko.min.js"></script>
+    {% block scripts %}{% endblock %}
     </body>
 </html>
