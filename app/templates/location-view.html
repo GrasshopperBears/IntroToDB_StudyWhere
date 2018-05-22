@@ -21,10 +21,14 @@
 
         <section class="location-review">
           익명
-          {{ review.like_score }}
           <img class="rating-icon"
-            alt="사람 수: {{ review.crowded_score }}"
-            src="../static/images/crowd-{{ review.crowded_score }}.png">
+            alt="만족도: {{ review.get_like_score_text() }}"
+            title="만족도: {{ review.get_like_score_text() }}"
+            src="/static/images/like-{{ review.like_score }}.png">
+          <img class="rating-icon"
+            alt="사람 수: {{ review.get_crowded_score_text() }}"
+            title="사람 수: {{ review.get_crowded_score_text() }}"
+            src="/static/images/crowd-{{ review.crowded_score }}.png">
           {{ review.comment[:50] if review.comment else '(한줄평 없음)' }}
         </section>
 

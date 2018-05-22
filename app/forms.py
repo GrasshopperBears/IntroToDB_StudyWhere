@@ -45,12 +45,13 @@ class LocationListFilterForm(FlaskForm):
 
 
 class ReviewForm(FlaskForm):
+    from app.models import Review
     like_score = RadioField('만족도', validators = [DataRequired('만족도를 선택하세요')],
-                    choices = [('0', '선택하지 않음'), ('1', '1'), ('2', '2'), ('3', '3')],
+                    choices = [(i, text) for i, text in enumerate(Review.like_score_to_text)],
                     default = '0'
                 )
     crowded_score = RadioField('혼잡도', validators = [DataRequired('혼잡도를 선택하세요')],
-                    choices = [('0', '선택하지 않음'), ('1', '1'), ('2', '2'), ('3', '3')],
+                    choices = [(i, text) for i, text in enumerate(Review.crowded_score_to_text)],
                     default = '0'
                 )
     comment = TextAreaField('평가', validators = [Optional(), Length(max = 300)])
