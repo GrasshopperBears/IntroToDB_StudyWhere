@@ -2,8 +2,9 @@
 
 {% block content %}
 
-  <section class="samplebox">
+  <section class="samplebox lead">
     <h1>{{ title }}</h1>
+    <br>
     <form method="POST">
       <div class="form-group row">
         <div class="col-form-label col-sm-2">만족도</div>
@@ -17,7 +18,7 @@
         </div>
       </div>
 
-      <div class="form-group row">
+      <div class="form-group row lead">
         <div class="col-form-label col-sm-2">혼잡도</div>
         <div class="col-sm-10 btn-group btn-group-toggle" data-toggle="buttons">
           {% for subfield in form.crowded_score %}
@@ -35,9 +36,10 @@
       </div>
 
       <div class="form-group float-right">
-        {{ form.submit_save(class = 'btn btn-primary') }}
-        {{ form.submit_delete(class = 'btn btn-secondary') }}
+        {{ form.submit_save(class = 'btn btn-primary lead') }}
+        {{ form.submit_delete(class = 'btn btn-secondary lead') }}
       </div>
+      <br>
     </form>
   </section>
 

@@ -2,7 +2,7 @@
 
 {% block content %}
 
-  <section class="samplebox">
+  <section class="samplebox lead">
     <h1>{{ title }}</h1>
     <div>이용 시간 (평일): {{ location.available_begin_weekday }} ~ {{ location.available_end_weekday }}</div>
     <div>이용 시간 (주말): {{ location.available_begin_weekend }} ~ {{ location.available_end_weekend }}</div>
@@ -14,7 +14,7 @@
     <div><a href="{{ url_for('review_location', location_id = location.location_number) }}">평가하기</a></div>
   </section>
 
-  <section class="samplebox">
+  <section class="samplebox lead">
     {% if location.reviews %}
 
       {% for review in location.reviews %}

@@ -12,14 +12,14 @@
 
 {% block content %}
 
-  <section class="samplebox">
+  <section class="samplebox lead">
       <h1>{{ title }}</h1>
-      <form class="form-inline" method="POST">
+      <form class="form-inline lead" method="POST">
         {{ form.filter_type(class = 'form-control form-control-sm') }}
         {{ form.filter_type.label }}
       </form>
   </section>
-  <section class="samplebox">
+  <section class="samplebox lead">
     {% if form.filter_type.data == 'building' %}
 
       {% for building_code, loc_list in locations|groupby('building_code') %}
