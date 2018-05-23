@@ -3,7 +3,8 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import Column, Integer, String, ForeignKey, TIME, DATETIME, TIMESTAMP
 from sqlalchemy.orm import relationship, backref
-from app.database import Base
+from sqlalchemy.sql import func
+from app.database import Base, db_session
 from flask_login import UserMixin
 from app import login
 
@@ -88,6 +89,24 @@ class Location(Base):
 
     def search_locations_by_category(category_n):
         return Location.query.filter_by(category_number = category_n).all()
+
+    def get_avg_like_score(self):
+        result = db_session.query(func.avg(Review.like_score).label('average')) \
+                           .filter(Review.location_number == self.location_number, Review.like_score != 0) \
+                           .first()
+        if result.average:
+            return float(result.average)
+        else:
+            return None
+            
+    def get_avg_crowded_score(self):
+        result = db_session.query(func.avg(Review.crowded_score).label('average')) \
+                           .filter(Review.location_number == self.location_number, Review.crowded_score != 0) \
+                           .first()
+        if result.average:
+            return float(result.average)
+        else:
+            return None
 
 
 class Slottypes(Base):
@@ -184,13 +203,13 @@ class Review(Base):
     like_score_to_text = ('선택하지 않음', '싫어요', '보통', '좋아요')
     def get_like_score_text(self):
         try:
-            return type(self).like_score_to_text[self.like_score]
+            return type(self).like_score_to_text[self.like_score or 0]
         except IndexError:
             return type(self).like_score_to_text[0]
 
     crowded_score_to_text = ('선택하지 않음', '한산함', '보통', '많음')
     def get_crowded_score_text(self):
         try:
-            return type(self).crowded_score_to_text[self.crowded_score]
+            return type(self).crowded_score_to_text[self.crowded_score or 0]
         except IndexError:
             return type(self).crowded_score_to_text[0]
