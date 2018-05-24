@@ -158,13 +158,14 @@ def add_reservation(location_id):
 @app.route('/my_reservations', methods = ['GET','POST'])
 @login_required
 def my_reservations():
-    my_reservations = Reservation.query.filter_by(user_id = current_user.user_id).all()
+    my_reservations = Reservation.query.filter_by(user_id = current_user.id).all()
     return render_template('my-reservations.html', my_reservations = my_reservations)
 
 @app.route('/reservation/<reservation_id>', methods=['GET','POST'])
 @login_required
 def reservation_modify(reservation_id):
+    """아직 구현된 링크가 없어 임시로 홈 화면으로 가도록 설정해놓았습니다."""
     chosen_reservation = Reservation.query.filter_by(reservation_id = reservation_id).first()
     if current_user.user_id != chosen_reservation.user_id:
-        return redirect("/")
-    return redirect("/")
+        return redirect(url_for('home'))
+    return render_template('home.html')
