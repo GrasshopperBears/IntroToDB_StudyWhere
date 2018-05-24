@@ -99,7 +99,8 @@ def view_location(location_id):
     else:
         review_pagination['next_page'] = 0
 
-    return render_template('location-view.html', title=location.location_name, location = location, review_pagination = review_pagination)
+    slot = Slot.query.filter_by(slot_location = location_id).all()
+    return render_template('location-view.html', title=location.location_name, location = location, review_pagination = review_pagination, slot= slot)
 
 
 @app.route('/locations/<location_id>/review', methods=['GET','POST'])
@@ -152,9 +153,9 @@ def choose_slot_for_location(location_id):
 def add_reservation(location_id):
     location = Location.query.filter_by(location_number = location_id).first()
     slot = Slot.query.filter_by(slot_location = location.location_number).all()
-    reservation_for_slot = Reservation.query.filter_by(reserve_slot = slot.slot_id).all()
-    return render_template('reserve-room.html', title = reservation, location = location, slot = slot, reservation = reservation_for_slot)
-
+    reservation_for_slot = Reservation.query.all()
+    # return render_template('reserve-room.html', title = reservation, location = location, slot = slot, reservation = reservation_for_slot)
+    return render_template('home.html')
 @app.route('/my_reservations', methods = ['GET','POST'])
 @login_required
 def my_reservations():
