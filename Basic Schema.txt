@@ -7,16 +7,16 @@
 
 [TABLE] buildings
 -	building_code (VARCHAR(6)), not NULL, PK
--	building_name (VARCHAR(80)), not NULL
+-	name (VARCHAR(80)), not NULL
 
 [TABLE] location_categories
 -	id (INT), not NULL, PK
--	type (VARCHAR(20)), not NULL
+-	name (VARCHAR(20)), not NULL
 
 [TABLE] locations
 -	id (INT), not NULL, PK
--	location_name (VARCHAR(30)), not NULL
--	building_number (VARCHAR(6)), not NULL, FK to BUILDING.building_number
+-	name (VARCHAR(30)), not NULL
+-	building_number (VARCHAR(6)), not NULL, FK to building.building_code
 -	categories_id (INT) , not NULL, FK to CATEGORY.category_number
 -	available_begin_weekday (TIME)
 -	available_end_weekday (TIME)
@@ -25,16 +25,16 @@
 
 [TABLE] slots
 -	id (INT), not NULL , PK
--	slot_name (VARCHAR(50)) , not NULL
--	locations_id (INT) , not NULL, FK to LOCATION.location_number
+-	name (VARCHAR(50)) , not NULL
+-	location_id (INT) , not NULL, FK to LOCATION.location_number
 -	max_reserve_time (INT)
 -	minimum_capacity (INT)
 -	maximum_capacity (INT)
 
 [TABLE] reservations
 -	id (INT) , not NULL
--	slots_id (INT) , not NULL, FK to SLOT.slot_id
--	users_id (VARCHAR(15)) , not NULL, FK to USER.user_id
+-	slot_id (INT) , not NULL, FK to SLOT.slot_id
+-	user_id (INT) , not NULL, FK to USER.user_id
 -	begin_date (DATETIME) , not NULL
 -	end_date (DATETIME) , not NULL
 -	num_people (INT) , not NULL
@@ -42,8 +42,8 @@
 
 [TABLE] reviews
 -	id (INT) , not NULL
--	user_id (VARCHAR(15)) , not NULL
--	locations_id (INT) , not NULL
+-	user_id (INT) , not NULL
+-	location_id (INT) , not NULL
 -	like_score (INT)
 -	crowded_score (INT)
 -	comment (VARCHAR(300))
