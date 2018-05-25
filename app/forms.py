@@ -11,20 +11,6 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Sign In')
 
     
-class reviewFormOld(FlaskForm):
-    reviewname = StringField('제목', validators=[DataRequired()])
-    like_score = SelectField('선호도 점수', validators=[DataRequired('별점을 선택해주세요.')],
-                    choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')]
-                    )
-    crowded_score =  SelectField('혼잡도 점수', validators=[DataRequired('별점을 선택해주세요.')],
-                    choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')]
-                    )   
-    content = TextAreaField('내용', validators=[DataRequired('내용을 입력해주세요.')],
-                description={'placeholder': '내용을 20자 이내로 입력해주세요.'}
-                )
-    submit = SubmitField('제출')
-
-
 class registerForm(FlaskForm):
     userid = StringField('ID', validators=[DataRequired('ID를 입력해주세요.')])
     password = PasswordField('비밀번호', validators=[DataRequired('비밀 번호는 필수 항목입니다.')])
@@ -57,3 +43,7 @@ class ReviewForm(FlaskForm):
     comment = TextAreaField('평가', validators = [Optional(), Length(max = 300)])
     submit_save   = SubmitField('저장')
     submit_delete = SubmitField('삭제')
+
+class ReservationForm(FlaskForm):
+    group_number = SelectField('사용 인원을 입력해주세요.', coerce = int)
+    purpose = TextAreaField('사용 목적을 입력해주세요.', validators = [Optional(), Length(max = 300)])
