@@ -9,7 +9,7 @@ from flask_login import UserMixin
 from app import login
 
 class User(UserMixin,Base):
-    __tablename__ = 'USER'
+    __tablename__ = 'users'
     __table_args__ = {'mysql_collate': ' utf8_general_ci'}
     id = Column(Integer, primary_key=True, unique=True)
     user_id = Column(String(15), unique=True)
@@ -32,7 +32,7 @@ def load_user(id):
     return User.query.get(int(id))
 
 class Building(Base):
-    __tablename__ = 'BUILDING'
+    __tablename__ = 'buildings'
     __table_args__ = {'mysql_collate': ' utf8_general_ci'}
     building_number = Column(String(6), primary_key=True, unique=True)
     building_name = Column(String(80), unique=True)
@@ -45,7 +45,7 @@ class Building(Base):
         return '<Building number: %r, Buillding name: %r>' % (self.building_number, self.building_name)
 
 class Category(Base):
-    __tablename__ = 'CATEGORY'
+    __tablename__ = 'categories'
     __table_args__ = {'mysql_collate': ' utf8_general_ci'}
     category_number = Column(Integer, unique=True, primary_key=True)
     type = Column(String(20), unique=True)
@@ -58,7 +58,7 @@ class Category(Base):
         return '<CATEGORY number: %r, CATEGORY name: %r>' % (self.category_number, self.type)
 
 class Location(Base):
-    __tablename__ = 'LOCATION'
+    __tablename__ = 'locations'
     __table_args__ = {'mysql_collate': ' utf8_general_ci'}
     location_number = Column(Integer, unique=True, primary_key=True)
     location_name = Column(String(30), unique=True)
@@ -111,7 +111,7 @@ class Location(Base):
 
 class SlotType(Base):
     """슬롯의 종류를 지정하는 테이블의 레코드"""
-    __tablename__= 'SLOTTYPES'
+    __tablename__= 'slottypes'
     __table_args__ = {'mysql_collate': ' utf8_general_ci'}
     id = Column('slot_number', Integer, unique = True, primary_key = True)
     name = Column('slot_type', String(30))
@@ -127,7 +127,7 @@ class SlotType(Base):
 
 
 class Slot(Base):
-    __tablename__= 'SLOT'
+    __tablename__= 'slots'
     __table_args__ = {'mysql_collate': ' utf8_general_ci'}
     slot_id = Column(Integer, unique=True, primary_key=True)
     slot_name = Column(String(50), unique=True)
@@ -152,7 +152,7 @@ class Slot(Base):
         return '<Slot id: %r, Slot name : %r>' % (self.slot_id, self.slot_name)
 
 class Reservation(Base):
-    __tablename__ = 'RESERVATION'
+    __tablename__ = 'reservations'
     __table_args__ = {'mysql_collate': ' utf8_general_ci'}
     reservation_id = Column(Integer, primary_key=True, unique=True)
     reserve_slot = Column(Integer, ForeignKey(Slot.slot_id), unique=True)
@@ -180,7 +180,7 @@ class Reservation(Base):
             self.reservation_id, self.reservation_slot, self.begin_date, self.end_date)
 
 class Review(Base):
-    __tablename__ = 'REVIEW'
+    __tablename__ = 'reviews'
     __table_args__ = {'mysql_collate': ' utf8_general_ci'}
     review_number = Column(Integer, primary_key=True, unique=True)
     user_id = Column(String(15), ForeignKey(User.user_id), unique=True)
