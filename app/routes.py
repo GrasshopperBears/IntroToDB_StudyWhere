@@ -99,8 +99,7 @@ def view_location(location_id):
     else:
         review_pagination['next_page'] = 0
 
-    slot = Slot.query.filter_by(location_id = location_id).all()
-    return render_template('location-view.html', title=location.name, location = location, review_pagination = review_pagination, slot = slot)
+    return render_template('location-view.html', title=location.name, location = location, review_pagination = review_pagination)
 
 
 @app.route('/locations/<location_id>/review', methods=['GET','POST'])
