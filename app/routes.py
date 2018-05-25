@@ -24,13 +24,13 @@ def login():
         return redirect("/")
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(user_name = form.userid.data).first()
+        user = User.query.filter_by(user_name = form.user_name.data).first()
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
         return redirect("/")
-    return render_template('login.html', title='Sign In', form=form)
+    return render_template('login.html', title='로그인', form=form)
 
 
 @app.route('/review', methods=['GET', 'POST'])
@@ -51,14 +51,13 @@ def register():
         return redirect("/")
     register_form = registerForm()
     if register_form.validate_on_submit():
-        user = User(user_name   = register_form.userid.data,
-                    person_name = register_form.username.data,
+        user = User(user_name   = register_form.user_name.data,
+                    person_name = register_form.person_name.data,
                     password    = register_form.password.data
-                    )
+                )
         db_session.add(user)
         db_session.commit()
-        flash(' ID: {}, 이름={} 님의 회원가입이 완료되었습니다.'.format(
-            register_form.userid.data, register_form.username.data))
+        flash(' ID: {}, 이름={} 님의 회원가입이 완료되었습니다.'.format(user.user_name, user.person_name))
         return redirect("/")
 
     return render_template('register.html', title='Register', form=register_form)
