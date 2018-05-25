@@ -6,16 +6,16 @@
     <form class="form-signin", action="" method="post">
         {{ form.hidden_tag() }}
         <p>
-            {{ form.username.label }}<br>
-            {{ form.username(class="form-control", placeholder="당신의 이름을 입력해주세요.", style="width:300px") }}
-            {% for error in form.username.errors %}
+            {{ form.person_name.label }}<br>
+            {{ form.person_name(class="form-control", placeholder="당신의 이름을 입력해주세요.", style="width:300px") }}
+            {% for error in form.person_name.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
         <p>
-            {{ form.userid.label }}<br>
-            {{ form.userid(class="form-control", placeholder="아이디를 입력해주세요.", style="width:300px") }}
-            {% for error in form.userid.errors %}
+            {{ form.user_name.label }}<br>
+            {{ form.user_name(class="form-control", placeholder="아이디를 입력해주세요.", style="width:300px") }}
+            {% for error in form.user_name.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>

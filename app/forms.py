@@ -14,10 +14,10 @@ class LoginForm(FlaskForm):
 
     
 class registerForm(FlaskForm):
-    userid = StringField('ID', validators=[DataRequired('ID를 입력해주세요.')])
+    user_name = StringField('ID', validators=[DataRequired('ID를 입력해주세요.')])
     password = PasswordField('비밀번호', validators=[DataRequired('비밀 번호는 필수 항목입니다.')])
     password_confirm = PasswordField('비밀번호 확인', validators=[DataRequired('비밀번호를 다시 입력해주세요.'), EqualTo('password', message='비밀번호가 일치하지 않습니다.')])
-    username = StringField('Username', validators=[DataRequired('이름을 입력해주세요.')])
+    person_name = StringField('Username', validators=[DataRequired('이름을 입력해주세요.')])
     terms = BooleanField('이용 약관에 동의합니다.', validators=[DataRequired('약관에 동의해주세요.')])
     submit = SubmitField('가입')
 
@@ -75,5 +75,8 @@ class ReviewForm(FlaskForm):
     submit_delete = SubmitField('삭제')
 
 class ReservationForm(FlaskForm):
-    group_number = SelectField('사용 인원을 입력해주세요.', coerce = int)
+    group_number = SelectField('사용 인원을 입력해주세요:', coerce = int)
+    using_time = SelectField('사용 시간을 입력해주세요:', coerce = int)
     purpose = TextAreaField('사용 목적을 입력해주세요.', validators = [Optional(), Length(max = 300)])
+    submit_save = SubmitField('예약')
+    submit_cancel = SubmitField('취소')

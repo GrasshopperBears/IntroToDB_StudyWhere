@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="samplebox lead">
+      <h1>예약 추가 정보</h1><br>
+      <h4>예약 정보를 확인해주세요.</h4>
+      <div class="form-group lead">
+            예약 장소: {{slot.name}}<br>
+            예약 일자 : {{ date }}<br>
+            예약 시작 시간 : {{begin_time[0:2]}}:{{begin_time[2:]}} <br>
+        </div>
+    </section>
+<section class="samplebox lead">
+    <form class = "form-reservation" action="" method="post">
+        {{ form.hidden_tag() }}
+        <div class="form-group lead">
+            {{form.using_time.label}}{{ form.using_time(class = 'form-control form-control-sm') }}
+        </div>
+        <div class="form-group lead">
+            {{form.group_number.label}}{{ form.group_number(class = 'form-control form-control-sm') }}
+        </div>
+
+        <div class="form-group lead">
+        {{ form.purpose.label }}
+        {{ form.purpose(class = "form-control", rows = "4") }}
+        </div>
+
+        <div class="form-group lead float-right">
+        {{form.submit_save(class = 'btn btn-primary lead')}}
+        {{ form.submit_cancel(class = 'btn btn-secondary lead') }}
+        </div>
+        <br>
+        
+    </form>
+</section>
+{% endblock %}
