@@ -43,8 +43,8 @@ body {
   font-size: 120%;
 }
 
-.login-form input[type=text],
-.login-form input[type=password]
+.credentials-form input[type=text],
+.credentials-form input[type=password]
 {
   max-width: 300px;
 }

@@ -50,7 +50,7 @@ def review():
 def register():
     if current_user.is_authenticated:
         return redirect("/")
-    register_form = registerForm()
+    register_form = RegisterForm()
     if register_form.validate_on_submit():
         user = User(user_name   = register_form.user_name.data,
                     person_name = register_form.person_name.data,
@@ -58,7 +58,7 @@ def register():
                 )
         db_session.add(user)
         db_session.commit()
-        flash(' ID: {}, 이름={} 님의 회원가입이 완료되었습니다.'.format(user.user_name, user.person_name))
+        flash('어서오세요, {}님! 회원가입이 완료되었습니다. (ID: {})'.format(user.person_name, user.user_name))
         return redirect("/")
 
     return render_template('register.html', title='Register', form=register_form)
@@ -200,7 +200,7 @@ def edit_reservation(location_id, slot_id):
                 reservable_time = i-1
                 break
 
-    
+
     reservation_form.group_number.choices = [(i,i) for i in range(slot.minimum_capacity, slot.maximum_capacity+1)]
     reservation_form.using_time.choices = [(i,i) for i in range(1, reservable_time+1)]
 

@@ -12,7 +12,7 @@ class LoginForm(FlaskForm):
 
 
 
-    
+
 class registerForm(FlaskForm):
     user_name = StringField('ID', validators=[DataRequired('ID를 입력해주세요.')])
     password = PasswordField('비밀번호', validators=[DataRequired('비밀 번호는 필수 항목입니다.')])
@@ -44,10 +44,10 @@ class RegisterForm(FlaskForm):
             DataRequired('비밀번호를 다시 입력해주세요.'),
             EqualTo('password', message='비밀번호가 일치하지 않습니다.')
         ])
-    person_name = StringField('Username', validators=[DataRequired('이름을 입력해주세요.')])
+    person_name = StringField('이름', validators=[DataRequired('이름을 입력해주세요.')])
     terms       = BooleanField('이용 약관에 동의합니다.', validators=[DataRequired('약관에 동의해주세요.')])
     submit      = SubmitField('가입')
-    
+
     def validate_user_name(self, user_name):
         from app.models import User
         user = User.query.filter_by(user_name = user_name.data).first()
