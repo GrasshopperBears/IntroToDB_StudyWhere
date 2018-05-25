@@ -11,6 +11,16 @@ class LoginForm(FlaskForm):
     submit      = SubmitField('로그인')
 
 
+
+    
+class registerForm(FlaskForm):
+    userid = StringField('ID', validators=[DataRequired('ID를 입력해주세요.')])
+    password = PasswordField('비밀번호', validators=[DataRequired('비밀 번호는 필수 항목입니다.')])
+    password_confirm = PasswordField('비밀번호 확인', validators=[DataRequired('비밀번호를 다시 입력해주세요.'), EqualTo('password', message='비밀번호가 일치하지 않습니다.')])
+    username = StringField('Username', validators=[DataRequired('이름을 입력해주세요.')])
+    terms = BooleanField('이용 약관에 동의합니다.', validators=[DataRequired('약관에 동의해주세요.')])
+    submit = SubmitField('가입')
+
 class reviewFormOld(FlaskForm):
     reviewname = StringField('제목', validators=[DataRequired()])
     like_score = SelectField('선호도 점수', validators=[DataRequired('별점을 선택해주세요.')],
@@ -37,7 +47,7 @@ class RegisterForm(FlaskForm):
     person_name = StringField('Username', validators=[DataRequired('이름을 입력해주세요.')])
     terms       = BooleanField('이용 약관에 동의합니다.', validators=[DataRequired('약관에 동의해주세요.')])
     submit      = SubmitField('가입')
-
+    
     def validate_user_name(self, user_name):
         from app.models import User
         user = User.query.filter_by(user_name = user_name.data).first()
@@ -63,3 +73,7 @@ class ReviewForm(FlaskForm):
     comment = TextAreaField('평가', validators = [Optional(), Length(max = 300)])
     submit_save   = SubmitField('저장')
     submit_delete = SubmitField('삭제')
+
+class ReservationForm(FlaskForm):
+    group_number = SelectField('사용 인원을 입력해주세요.', coerce = int)
+    purpose = TextAreaField('사용 목적을 입력해주세요.', validators = [Optional(), Length(max = 300)])
