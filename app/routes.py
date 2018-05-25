@@ -23,7 +23,7 @@ def login():
     """로그인을 위해 사용자의 ID, 비밀번호 입력을 받는다."""
     if current_user.is_authenticated:
         flash("이미 로그인된 상태입니다.")
-        return redirect("/")
+        return redirect(url_for('home'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(user_name = form.user_name.data).first()
@@ -36,7 +36,7 @@ def login():
             return redirect(url_for('login'))
         else:
             login_user(user, remember=form.remember_me.data)
-            return redirect("/")
+            return redirect(url_for('home'))
     return render_template('login.html', title='로그인', form=form)
 
 
@@ -44,7 +44,7 @@ def login():
 def register():
     """새로운 회원의 가입을 처리한다."""
     if current_user.is_authenticated:
-        return redirect("/")
+        return redirect(url_for('home'))
     register_form = RegisterForm()
     if register_form.validate_on_submit():
         user = User(user_name   = register_form.user_name.data,
@@ -54,7 +54,7 @@ def register():
         db_session.add(user)
         db_session.commit()
         flash('어서오세요, {}님! 회원가입이 완료되었습니다. (ID: {})'.format(user.person_name, user.user_name))
-        return redirect("/")
+        return redirect(url_for('home'))
 
     return render_template('register.html', title='Register', form=register_form)
 
@@ -63,7 +63,7 @@ def register():
 def logout():
     """현재 사용자를 로그아웃시킨다"""
     logout_user()
-    return redirect("/")
+    return redirect(url_for('home'))
 
 
 @app.route('/locations', methods=['GET','POST'])
