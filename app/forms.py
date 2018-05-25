@@ -75,5 +75,8 @@ class ReviewForm(FlaskForm):
     submit_delete = SubmitField('삭제')
 
 class ReservationForm(FlaskForm):
-    group_number = SelectField('사용 인원을 입력해주세요.', coerce = int)
+    group_number = SelectField('사용 인원을 입력해주세요:', coerce = int)
+    using_time = SelectField('사용 시간을 입력해주세요:', coerce = int)
     purpose = TextAreaField('사용 목적을 입력해주세요.', validators = [Optional(), Length(max = 300)])
+    submit_save = SubmitField('예약')
+    submit_cancel = SubmitField('취소')

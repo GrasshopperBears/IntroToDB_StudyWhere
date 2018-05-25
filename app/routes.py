@@ -1,9 +1,10 @@
 from flask import render_template, flash, redirect, url_for, request, send_from_directory
 from app import app
-from app.forms import LoginForm, reviewFormOld, registerForm, LocationListFilterForm, ReviewForm
+from app.forms import *
 from flask_login import current_user, login_user, logout_user, login_required
 from app.database import db_session
 from app.models import *
+from sqlalchemy import and_
 
 
 # @app.route('/static/<path:path>')
@@ -174,3 +175,54 @@ def reservation_modify(reservation_id):
     if current_user.id != chosen_reservation.user_id:
         return redirect(url_for('home'))
     return render_template('home.html')
+
+@app.route('/locations/<location_id>/slots/<slot_id>', methods = ['GET','POST'])
+@login_required
+def edit_reservation(location_id, slot_id):
+    import datetime
+    location = Location.query.filter_by(id = location_id).first()
+    slot = Slot.query.filter_by(id = slot_id).first()
+    reservation_for_slot  = Reservation.query.filter_by(slot_id = slot_id).all()
+    date = request.args.get('date')
+    begin_time = request.args.get('begin_time')
+    begin_date_string = date + ' ' + begin_time
+    begin_date = datetime.datetime.strptime(begin_date_string, "%Y-%m-%d %H%M")
+    reservable_time = slot.max_reserve_time
+    my_reservation = Reservation.query.filter(and_(Reservation.slot_id == slot_id, Reservation.user_id == current_user.get_id(), Reservation.begin_date == begin_date)).first()
+
+    reservation_form = ReservationForm()
+    for i in range(1,slot.max_reserve_time+1):
+        time_for_checking_maximum = str(int(begin_time) + i*100)
+        date_string_for_checking_maximum = date + ' ' + time_for_checking_maximum
+        date_for_checking_maximum = datetime.datetime.strptime(date_string_for_checking_maximum, "%Y-%m-%d %H%M")
+        for j in range(len(reservation_for_slot)):
+            if date_for_checking_maximum > reservation_for_slot[j].begin_date:
+                reservable_time = i-1
+                break
+
+    
+    reservation_form.group_number.choices = [(i,i) for i in range(slot.minimum_capacity, slot.maximum_capacity+1)]
+    reservation_form.using_time.choices = [(i,i) for i in range(1, reservable_time+1)]
+
+    if request.method == 'POST':
+        if reservation_form.submit_save.data:
+            # 이미 저장한 review가 없으면 새로 생성한다.
+            end_time = str(int(begin_time) + reservation_form.using_time.data*100)
+            end_time_string = date + ' ' + end_time
+            end_date = datetime.datetime.strptime(end_time_string, "%Y-%m-%d %H%M")
+            if not my_reservation:
+                my_reservation = Reservation(slot_id = slot_id, user_id = current_user.get_id())
+
+            my_reservation.begin_date = begin_date
+            my_reservation.end_date = end_date
+            my_reservation.num_people = reservation_form.group_number.data
+            my_reservation.reservation_purpose = reservation_form.purpose.data
+            db_session.add(my_reservation)
+            db_session.commit()
+            flash('예약이 성공적으로 완료되었습니다.')
+            return redirect(url_for('home'))
+        elif reservation_form.submit_cancel:
+            return redirect(url_for('home'))
+
+    return render_template('edit_reservation.html', title = '예약 추가 정보 입력', form = reservation_form, date = date, begin_time = begin_time, slot = slot)
+
