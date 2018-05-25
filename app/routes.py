@@ -20,6 +20,7 @@ def home():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    """로그인을 위해 사용자의 ID, 비밀번호 입력을 받는다."""
     if current_user.is_authenticated:
         flash("you've already signed in.")
         return redirect("/")
@@ -36,6 +37,7 @@ def login():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    """새로운 회원의 가입을 처리한다."""
     if current_user.is_authenticated:
         return redirect("/")
     register_form = RegisterForm()
@@ -54,6 +56,7 @@ def register():
 
 @app.route('/logout')
 def logout():
+    """현재 사용자를 로그아웃시킨다"""
     logout_user()
     return redirect("/")
 
