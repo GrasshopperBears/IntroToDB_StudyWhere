@@ -16,7 +16,7 @@ class User(UserMixin,Base):
     user_name     = Column(String(15), unique=True)
     person_name   = Column(String(10))  # unique 할 필요는 없을 듯?
     password_hash = Column(String(150)) # unique 할 필요는 없을 듯?
-    
+
     def __init__(self, id = None, user_name = None, person_name = None, password = None):
         self.id            = id
         self.user_name     = user_name
@@ -99,7 +99,7 @@ class Location(Base):
             return float(result.average)
         else:
             return None
-            
+
     def get_avg_crowded_score(self):
         result = db_session.query(func.avg(Review.crowded_score).label('average')) \
                            .filter(Review.location_id == self.id, Review.crowded_score != 0) \
@@ -122,7 +122,7 @@ class Slot(Base):
     maximum_capacity    = Column(Integer)
 
     location            = relationship('Location', backref = 'slots')
-    
+
     def __init__(self, id=None, name=None, location_id=None, max_reserve_time=None, minimum_capacity=None, maximum_capacity=None):
         self.id                 = id
         self.name               = name
@@ -191,7 +191,7 @@ class Review(Base):
 
     def __repr__(self):
         return '<review id: %r, like_score: %r, crowded_score: %r>' %(self.id, self.like_score, self.crowded_score)
-    
+
     like_score_to_text = ('선택하지 않음', '싫어요', '보통', '좋아요')
     def get_like_score_text(self):
         try:

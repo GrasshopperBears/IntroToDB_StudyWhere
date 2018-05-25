@@ -51,8 +51,10 @@ def register():
         return redirect("/")
     register_form = registerForm()
     if register_form.validate_on_submit():
-        user = User(user_name = register_form.userid.data, person_name=register_form.username.data
-                , password = register_form.password.data)
+        user = User(user_name   = register_form.userid.data,
+                    person_name = register_form.username.data,
+                    password    = register_form.password.data
+                    )
         db_session.add(user)
         db_session.commit()
         flash(' ID: {}, 이름={} 님의 회원가입이 완료되었습니다.'.format(
@@ -116,10 +118,10 @@ def review_location(location_id):
     form = ReviewForm()
     if request.method == 'POST':
         if form.submit_save.data:
-            # 이미 저장한 review가 없으면 새로 생성한다. 
+            # 이미 저장한 review가 없으면 새로 생성한다.
             if not my_review:
                 my_review = Review(user_id = current_user.get_id(), location_id = location_id)
-            
+
             my_review.like_score    = form.like_score.data
             my_review.crowded_score = form.crowded_score.data
             my_review.comment       = form.comment.data
@@ -132,7 +134,7 @@ def review_location(location_id):
                 db_session.commit()
 
         return redirect(url_for('view_location', location_id = location_id))
-    
+
     # 저장한 리뷰가 있으면 그 내용을 불러온다.
     if my_review:
         form.comment.data       = my_review.comment
