@@ -17,7 +17,7 @@ class User(UserMixin,Base):
     person_name   = Column(String(10))  # unique 할 필요는 없을 듯?
     password_hash = Column(String(150)) # unique 할 필요는 없을 듯?
     
-    def __init__(self, id, user_name = None, person_name=None, password = None):
+    def __init__(self, id = None, user_name = None, person_name = None, password = None):
         self.id            = id
         self.user_name     = user_name
         self.person_name   = person_name
@@ -90,9 +90,6 @@ class Location(Base):
 
     def __repr__(self):
         return '<Location id: %r, name: %r, building code: %r>' %(self.id, self.name, self.building_code)
-
-    def search_locations_by_category(category_id):
-        return Location.query.filter_by(category_id = category_id).all()
 
     def get_avg_like_score(self):
         result = db_session.query(func.avg(Review.like_score).label('average')) \
