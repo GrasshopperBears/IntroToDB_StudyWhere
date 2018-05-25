@@ -1,4 +1,5 @@
-﻿[TABLE] USER
+﻿Basic Schema
+[TABLE] USER
 -	id (INT), PK, AUTO_INCREMENT(INSERT 시 이 COLUMN은 NULL로 넣으면 알아서 추가됩니다)
 -	user_id (VARCHAR(15)), not NULL
 -	user_name (VARCHAR(10)), not NULL

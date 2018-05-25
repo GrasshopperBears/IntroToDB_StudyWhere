@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <section class="samplebox ">
+      <h1>내 예약 목록</h1>
+    </section>
+ 
+
+    <section class="samplebox lead">
+      {% if my_reservations %}
+
+        <ul class="list-group">
+        
+          {% for reservation in my_reservations %}
+
+            <li class="list-group-item">
+              <h2 class="reservation-title">
+                <a href="{{url_for('reservation_modify',
+                reservation_id = reservation.reservation_id) }}"> {{ reservation.slot.slot_name }} </a>
+              </h2>
+              {{reservation.begin_date}} ~ {{reservation.end_date}}
+            </li>
+          
+          {% endfor %}
+
+        </ul>
+
+      {% else %}
+
+        예약한 항목이 없습니다.
+
+      {% endif %}
+
+    </section>
+
+{% endblock %}

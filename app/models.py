@@ -162,6 +162,9 @@ class Reservation(Base):
     num_people = Column(Integer, unique=True)
     reservation_purpose = Column(String(50))
 
+    user = relationship('User', backref = 'reservations')
+    slot = relationship('Slot', backref = 'reservations')
+
     def __init__(self, reservation_id=None, reservation_slot=None, user_id=None,
             begin_date=None, end_date=None, num_people=None, reservation_purpose=None):
             self.reservation_id = reservation_id
@@ -173,7 +176,7 @@ class Reservation(Base):
             self.reservation_purpose = reservation_purpose
 
     def __repr__(self):
-        return '<예약 ID: %r, 예약 장소: %r, 예약 시작: %s, 예약 종료: %r' %(
+        return '<예약 ID: %r, 예약 장소: %r, 예약 시작: %s, 예약 종료: %s' %(
             self.reservation_id, self.reservation_slot, self.begin_date, self.end_date)
 
 class Review(Base):
