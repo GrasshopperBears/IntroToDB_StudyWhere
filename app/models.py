@@ -67,8 +67,8 @@ class Location(Base):
     __table_args__ = {'mysql_collate': ' utf8_general_ci'}
     id              = Column(Integer, unique=True, primary_key=True)
     name            = Column(String(30), unique=True)
-    building_code   = Column(String(6), ForeignKey(Building.building_number), unique=True)
-    category_id     = Column(Integer, ForeignKey(LocationCategory.category_id), unique=True)
+    building_code   = Column(String(6), ForeignKey(Building.building_code), unique=True)
+    category_id     = Column(Integer, ForeignKey(LocationCategory.id), unique=True)
     available_begin_weekday = Column(TIME)
     available_end_weekday   = Column(TIME)
     available_begin_weekend = Column(TIME)
@@ -91,8 +91,8 @@ class Location(Base):
     def __repr__(self):
         return '<Location id: %r, name: %r, building code: %r>' %(self.id, self.name, self.building_code)
 
-    def search_locations_by_category(category_n):
-        return Location.query.filter_by(category_id = category_n).all()
+    def search_locations_by_category(category_id):
+        return Location.query.filter_by(category_id = category_id).all()
 
     def get_avg_like_score(self):
         result = db_session.query(func.avg(Review.like_score).label('average')) \
@@ -119,7 +119,7 @@ class Slot(Base):
     __table_args__ = {'mysql_collate': ' utf8_general_ci'}
     id                  = Column(Integer, unique=True, primary_key=True)
     name                = Column(String(50), unique=True)
-    location_id         = Column(Integer, ForeignKey(Location.location_number), unique=True)
+    location_id         = Column(Integer, ForeignKey(Location.id), unique=True)
     max_reserve_time    = Column(Integer)
     minimum_capacity    = Column(Integer)
     maximum_capacity    = Column(Integer)
@@ -173,7 +173,7 @@ class Review(Base):
     __table_args__ = {'mysql_collate': ' utf8_general_ci'}
     id              = Column(Integer, primary_key=True, unique=True)
     user_id         = Column(Integer, ForeignKey(User.id), unique=True)
-    location_id     = Column(Integer, ForeignKey(Location.location_number), unique=True)
+    location_id     = Column(Integer, ForeignKey(Location.id), unique=True)
     like_score      = Column(Integer)
     crowded_score   = Column(Integer)
     comment         = Column(String(300))
