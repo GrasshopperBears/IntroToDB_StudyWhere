@@ -34,18 +34,6 @@ def login():
     return render_template('login.html', title='로그인', form=form)
 
 
-@app.route('/review', methods=['GET', 'POST'])
-@login_required
-def review():
-    review = reviewFormOld()
-    if review.validate_on_submit():
-        flash('Review requested for ReviewName {}, like_score={}'.format(
-            review.reviewname.data, review.like_score.data))
-        return redirect("/")
-
-    return render_template('review.html', title='Review', form=review)
-
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
