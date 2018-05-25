@@ -1,106 +1,105 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        {% if title %}
-        <title>{{ title }} - StudyWhere</title>
-        {% else %}
-        <title>StudyWhere</title>
+
+<head>
+  {% if title %}
+    <title>{{ title }} - StudyWhere</title>
+  {% else %}
+    <title>StudyWhere</title>
+  {% endif %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/static/css/bootstrap.min.css" />
+
+  <!-- Custom styles for this template -->
+  <link rel="stylesheet" href="/static/css/bootstrap-datepicker3.css" />
+  <link rel="stylesheet" href="/static/css/studywhere.css" />
+</head>
+
+<body>
+  <nav class="navbar navbar-dark fixed-top bg-dark shadow navbar-expand-md">
+    <a class="navbar-brand" href="{{ url_for('home') }}">StudyWhere</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="{{ url_for('home') }}">
+            Home
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+
+        {% if current_user.is_anonymous %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+          </li>
         {% endif %}
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="">
-        <meta name="author" content="">
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('locations') }}">Locations</a>
+        </li>
+        {% if not current_user.is_anonymous %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('my_reservations') }}">My Reservation</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
 
-        <!-- Bootstrap core CSS -->
-        <link rel="stylesheet" href="/static/css/bootstrap.min.css" />
+    <ul class="navbar-nav px-3">
+      <!-- 홈 화면에서 사용자의 이름을 확인할 수 있는 배너를 설정하였습니다. -->
+      {% if not current_user.is_anonymous %}
+        <li class="nav-item active">
+          <a class="nav-link">{{ current_user.user_name }}님, 환영합니다!</a>
+        </li>
+        <li class="nav-item text-nowrap">
+          <a class="nav-link" href="{{ url_for('logout') }}">
+            <span data-feather="users"></span>
+            Logout</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link">로그인 후에 더 많은 서비스를 이용하실 수 있습니다.</a>
+        </li>
+        <li class="nav-item text-nowrap">
+          <a class="nav-link" href="{{ url_for('login') }}">
+            <span data-feather="users"></span>
+            Login</a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
 
-        <!-- Custom styles for this template -->
-        <link rel="stylesheet" href="/static/css/bootstrap-datepicker3.css" />
-        <link rel="stylesheet" href="/static/css/studywhere.css" />
-    </head>
-    <body>
-        <nav class="navbar navbar-dark fixed-top bg-dark shadow navbar-expand-md">
-          <a class="navbar-brand" href="{{url_for('home')}}">StudyWhere</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active"><a class="nav-link" href="/">
-                         Home
-                        <span class="sr-only">(current)</span></a>
-                    </li>
+  <main role="main" class="container">
 
-                    {% if current_user.is_anonymous %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('register') }}">
-                        Register</a>
-                    </li>
-                    {% endif %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('locations') }}">
-                            Locations</a>
-                    </li>
-                    {% if not current_user.is_anonymous %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{url_for('my_reservations')}}">
-                            My Reservation</a>
-                    </li>
-                    {% endif %}
-                </ul>
-            </div>
-
-          <ul class="navbar-nav px-3">
-            <!-- 홈 화면에서 사용자의 이름을 확인할 수 있는 배너를 설정하였습니다. -->
-            {% if not current_user.is_anonymous %}
-                    <li class="nav-item active">
-                        <a class="nav-link">
-                        {{current_user.user_name}} 님, 환영합니다!</a>
-                    <li class="nav-item text-nowrap">
-                        <a class="nav-link" href="{{ url_for('logout') }}">
-                         <span data-feather="users"></span>
-                            Logout</a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link"> 로그인 후에 더 많은 서비스를 이용하실 수 있습니다. </a>
-                    </li>
-                    <li class="nav-item text-nowrap">
-                        <a class="nav-link" href="{{ url_for('login') }}">
-                         <span data-feather="users"></span>
-                            Login</a>
-                    </li>
-                    {% endif %}
-          </ul>
-        </nav>
-
-        <main role="main" class="container">
-
-        <div class="starter-template">
-            {% for i in range(4) %}
-            <br>
+    <div class="starter-template">
+      <br><br><br><br>
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <ul>
+            {% for message in messages %}
+              <li>{{ message }}</li>
             {% endfor %}
-            {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            <ul>
-                {% for message in messages %}
-                <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-            {% endwith %}
-            {% block content %}{% endblock %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </div>
+  </main>
 
-        </div>
-        </main>
-
-    <!-- Bootstrap core JavaScript
+  <!-- Bootstrap core JavaScript
     ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="/static/js/jquery.slim.min.js"></script>
-    <script src="/static/js/bootstrap.bundle.min.js"></script>
-    <script src="/static/js/bootstrap-datepicker.min.js"></script>
-    <script src="/static/js/bootstrap-datepicker.ko.min.js"></script>
-    {% block scripts %}{% endblock %}
-    </body>
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="/static/js/jquery.slim.min.js"></script>
+  <script src="/static/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/js/bootstrap-datepicker.min.js"></script>
+  <script src="/static/js/bootstrap-datepicker.ko.min.js"></script>
+  {% block scripts %}{% endblock %}
+</body>
+
 </html>
