@@ -16,6 +16,10 @@
 
     <section class="slot">
       <h2>{{ slot.name }}</h2>
+      <div class="slot__tags">
+        <span class="badge badge-primary">인원: {{ slot.minimum_capacity if slot.minimum_capacity > 0 else '제한 없음' }} ~ {{ slot.maximum_capacity ~ '명' if slot.maximum_capacity > 0 else '제한 없음' }}</span>
+        <span class="badge badge-secondary">이용 시간: {{ '최대 %d시간'|format(slot.max_reserve_time) if slot.minimum_capacity > 0 else '제한 없음' }}</span>
+      </div>
       <ul class="list-inline">
 
         {% for begin_time, segment in slot.segments.items() %}

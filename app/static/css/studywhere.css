@@ -21,6 +21,10 @@ body {
   height: 22px;
 }
 
+.slot__tags {
+  margin-bottom: 0.5em;
+}
+
 .slot__segment {
   font-size: 70%;
   width:  80px;
