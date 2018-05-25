@@ -1,9 +1,7 @@
 # -- coding: utf-8 --
 
-from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import Column, Integer, String, ForeignKey, TIME, DATETIME, TIMESTAMP
 from sqlalchemy.orm import relationship, backref
-from sqlalchemy.sql import func
 from app.database import Base, db_session
 from flask_login import UserMixin
 from app import login
@@ -18,6 +16,7 @@ class User(UserMixin,Base):
     password_hash = Column(String(150)) # unique 할 필요는 없을 듯?
 
     def __init__(self, id = None, user_name = None, person_name = None, password = None):
+        from werkzeug.security import generate_password_hash
         self.id            = id
         self.user_name     = user_name
         self.person_name   = person_name
@@ -27,6 +26,7 @@ class User(UserMixin,Base):
         return '<User: id is %r, user_name is %r>' % (self.id, self.user_name)
 
     def check_password(self, password):
+        from werkzeug.security import check_password_hash
         return check_password_hash(self.password_hash, password)
 
 @login.user_loader
@@ -92,6 +92,7 @@ class Location(Base):
         return '<Location id: %r, name: %r, building code: %r>' %(self.id, self.name, self.building_code)
 
     def get_avg_like_score(self):
+        from sqlalchemy.sql import func
         result = db_session.query(func.avg(Review.like_score).label('average')) \
                            .filter(Review.location_id == self.id, Review.like_score != 0) \
                            .first()
@@ -101,6 +102,7 @@ class Location(Base):
             return None
 
     def get_avg_crowded_score(self):
+        from sqlalchemy.sql import func
         result = db_session.query(func.avg(Review.crowded_score).label('average')) \
                            .filter(Review.location_id == self.id, Review.crowded_score != 0) \
                            .first()
