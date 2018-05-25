@@ -33,7 +33,7 @@
 
             <li class="list-inline-item rounded slot__segment">
               <a href="{{ url_for('edit_reservation', location_id = slot.location_id, slot_id = slot.id, date = form.date.data, begin_time = begin_time.strftime('%H%M')) }}">
-                <div>{{ segment.begin_time_str }}</div>
+                <div>{{ begin_time.strftime('%H:%M') }}</div>
                 <div>예약 가능</div>
               </a>
             </li>
