@@ -22,16 +22,21 @@ def home():
 def login():
     """로그인을 위해 사용자의 ID, 비밀번호 입력을 받는다."""
     if current_user.is_authenticated:
-        flash("you've already signed in.")
+        flash("이미 로그인된 상태입니다.")
         return redirect("/")
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(user_name = form.user_name.data).first()
-        if user is None or not user.check_password(form.password.data):
-            flash('Invalid username or password')
+
+        if user is None:
+            flash('\'{}\' 와 일치하는 사용자를 찾을 수 없습니다.'.format(form.user_name.data), 'error')
             return redirect(url_for('login'))
-        login_user(user, remember=form.remember_me.data)
-        return redirect("/")
+        elif not user.check_password(form.password.data):
+            flash('비밀번호가 틀렸습니다.', 'error')
+            return redirect(url_for('login'))
+        else:
+            login_user(user, remember=form.remember_me.data)
+            return redirect("/")
     return render_template('login.html', title='로그인', form=form)
 
 
