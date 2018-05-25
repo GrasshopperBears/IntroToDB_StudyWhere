@@ -8,21 +8,23 @@ from app.database import Base, db_session
 from flask_login import UserMixin
 from app import login
 
+
 class User(UserMixin,Base):
     __tablename__ = 'users'
     __table_args__ = {'mysql_collate': ' utf8_general_ci'}
-    id = Column(Integer, primary_key=True, unique=True)
-    user_id = Column(String(15), unique=True)
-    user_name = Column(String(10), unique = True)
-    password_hash = Column(String(150), unique=True)
+    id            = Column(Integer, primary_key=True, unique=True)
+    user_name     = Column(String(15), unique=True)
+    person_name   = Column(String(10))  # unique 할 필요는 없을 듯?
+    password_hash = Column(String(150)) # unique 할 필요는 없을 듯?
     
-    def __init__(self, user_id = None, user_name=None, password = None):
-        self.user_id =user_id 
-        self.user_name = user_name
+    def __init__(self, id, user_name = None, person_name=None, password = None):
+        self.id            = id
+        self.user_name     = user_name
+        self.person_name   = person_name
         self.password_hash = generate_password_hash(password)
 
     def __repr__(self):
-        return '<User: id is %r, name is %r>' % (self.user_id, self.user_name)
+        return '<User: id is %r, user_name is %r>' % (self.id, self.user_name)
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
@@ -31,68 +33,70 @@ class User(UserMixin,Base):
 def load_user(id):
     return User.query.get(int(id))
 
+
 class Building(Base):
     __tablename__ = 'buildings'
     __table_args__ = {'mysql_collate': ' utf8_general_ci'}
-    building_number = Column(String(6), primary_key=True, unique=True)
-    building_name = Column(String(80), unique=True)
+    building_code = Column(String(6), primary_key=True, unique=True)
+    name          = Column(String(80), unique=True)
 
-    def __init__(self, number=None, name=None):
-        self.building_number = number
-        self.building_name = name
+    def __init__(self, building_code=None, name=None):
+        self.building_code = building_code
+        self.name          = name
 
     def __repr__(self):
-        return '<Building number: %r, Buillding name: %r>' % (self.building_number, self.building_name)
+        return '<Building code: %r, name: %r>' % (self.building_code, self.name)
 
-class Category(Base):
-    __tablename__ = 'categories'
+
+class LocationCategory(Base):
+    __tablename__ = 'location_categories'
     __table_args__ = {'mysql_collate': ' utf8_general_ci'}
-    category_number = Column(Integer, unique=True, primary_key=True)
-    type = Column(String(20), unique=True)
+    id      = Column(Integer, unique=True, primary_key=True)
+    name    = Column(String(20), unique=True)
 
-    def __init__(self, number= None, type = None):
-        self.category_number = number
-        self.category_type = type
+    def __init__(self, id = None, name = None):
+        self.id     = id
+        self.name   = name
 
     def __repr__(self):
-        return '<CATEGORY number: %r, CATEGORY name: %r>' % (self.category_number, self.type)
+        return '<LocationCategory id: %r, name: %r>' % (self.id, self.name)
+
 
 class Location(Base):
     __tablename__ = 'locations'
     __table_args__ = {'mysql_collate': ' utf8_general_ci'}
-    location_number = Column(Integer, unique=True, primary_key=True)
-    location_name = Column(String(30), unique=True)
-    building_code = Column(String(6), ForeignKey(Building.building_number), unique=True)
-    category_number = Column(Integer, ForeignKey(Category.category_number), unique=True)
+    id              = Column(Integer, unique=True, primary_key=True)
+    name            = Column(String(30), unique=True)
+    building_code   = Column(String(6), ForeignKey(Building.building_number), unique=True)
+    category_id     = Column(Integer, ForeignKey(LocationCategory.category_id), unique=True)
     available_begin_weekday = Column(TIME)
-    available_end_weekday = Column(TIME)
+    available_end_weekday   = Column(TIME)
     available_begin_weekend = Column(TIME)
-    available_end_weekend = Column(TIME)
+    available_end_weekend   = Column(TIME)
 
-    building = relationship("Building", backref = "locations")
-    category = relationship("Category", backref = "locations")
+    building        = relationship('Building', backref = 'locations')
+    category        = relationship('LocationCategory', backref = 'locations')
 
-    def __init__(self, number=None, name=None, code=None, category_number=None, abw = None,
+    def __init__(self, id=None, name=None, code=None, category_id=None, abw = None,
                     aew = None, a_b_end = None, a_e_end = None):
-        self.location_number = number
-        self.location_name = name
-        self.building_code = code
-        self.category_number = category_number
-        self.available_begin_weekday = abw
-        self.available_end_weekday = aew
-        self.available_begin_weekend = a_b_end
-        self.available_end_weekend = a_e_end
+        self.id             = id
+        self.name           = name
+        self.building_code  = code
+        self.category_id    = category_id
+        self.available_begin_weekday    = abw
+        self.available_end_weekday      = aew
+        self.available_begin_weekend    = a_b_end
+        self.available_end_weekend      = a_e_end
 
     def __repr__(self):
-        return '<Location_name = %r, Location_number = %r, Buildig_code = %r>' %(self.location_name, self.location_number, 
-            self.building_code)
+        return '<Location id: %r, name: %r, building code: %r>' %(self.id, self.name, self.building_code)
 
     def search_locations_by_category(category_n):
-        return Location.query.filter_by(category_number = category_n).all()
+        return Location.query.filter_by(category_id = category_n).all()
 
     def get_avg_like_score(self):
         result = db_session.query(func.avg(Review.like_score).label('average')) \
-                           .filter(Review.location_number == self.location_number, Review.like_score != 0) \
+                           .filter(Review.location_id == self.id, Review.like_score != 0) \
                            .first()
         if result.average:
             return float(result.average)
@@ -101,7 +105,7 @@ class Location(Base):
             
     def get_avg_crowded_score(self):
         result = db_session.query(func.avg(Review.crowded_score).label('average')) \
-                           .filter(Review.location_number == self.location_number, Review.crowded_score != 0) \
+                           .filter(Review.location_id == self.id, Review.crowded_score != 0) \
                            .first()
         if result.average:
             return float(result.average)
@@ -109,69 +113,53 @@ class Location(Base):
             return None
 
 
-class SlotType(Base):
-    """슬롯의 종류를 지정하는 테이블의 레코드"""
-    __tablename__= 'slottypes'
-    __table_args__ = {'mysql_collate': ' utf8_general_ci'}
-    id = Column('slot_number', Integer, unique = True, primary_key = True)
-    name = Column('slot_type', String(30))
-    maximum_capacity = Column(Integer)
-
-    def __init__(self, id = None, name = None, maximum_capacity = None):
-        self.id = id
-        self.name = name
-        self.maximum_capacity = maximum_capacity
-        
-    def __repr__(self):
-        return '<SlotType ID: {!r}, name: {!r}>'.format(self.id, self.name)
-
-
 class Slot(Base):
+    """예약할 수 있는 공간의 최소 단위 (세미나실, 강의실 등)"""
     __tablename__= 'slots'
     __table_args__ = {'mysql_collate': ' utf8_general_ci'}
-    slot_id = Column(Integer, unique=True, primary_key=True)
-    slot_name = Column(String(50), unique=True)
-    slot_location = Column(Integer, ForeignKey(Location.location_number), unique=True)
-    slot_type_id = Column(Integer, ForeignKey(SlotType.id), unique = True)
-    max_reserve_time = Column(Integer)
-    minimum_capacity = Column(Integer)
+    id                  = Column(Integer, unique=True, primary_key=True)
+    name                = Column(String(50), unique=True)
+    location_id         = Column(Integer, ForeignKey(Location.location_number), unique=True)
+    max_reserve_time    = Column(Integer)
+    minimum_capacity    = Column(Integer)
+    maximum_capacity    = Column(Integer)
 
-    slot_type = relationship('SlotType')
-    location  = relationship('Location', backref = 'slots')
+    location            = relationship('Location', backref = 'slots')
     
-    def __init__(self, slot_id=None, slot_name=None, slot_location=None, 
-        slot_type_id=None, max_reserve_time=None, minimum_capacity=None):
-        self.slot_id = slot_id
-        self.slot_name = slot_name
-        self.slot_location= slot_location
-        self.slot_type_id = slot_type_id
-        self.max_reserve_time = max_reserve_time
-        self.minimum_capacity = minimum_capacity
+    def __init__(self, id=None, name=None, location_id=None, max_reserve_time=None, minimum_capacity=None, maximum_capacity=None):
+        self.id                 = id
+        self.name               = name
+        self.location_id        = location_id
+        self.max_reserve_time   = max_reserve_time
+        self.maximum_capacity   = maximum_capacity
+        self.minimum_capacity   = minimum_capacity
 
     def __repr__(self):
-        return '<Slot id: %r, Slot name : %r>' % (self.slot_id, self.slot_name)
+        return '<Slot id: %r, name : %r>' % (self.id, self.name)
+
 
 class Reservation(Base):
+    """한 user가 한 slot을 예약한 항목"""
     __tablename__ = 'reservations'
     __table_args__ = {'mysql_collate': ' utf8_general_ci'}
-    reservation_id = Column(Integer, primary_key=True, unique=True)
-    reserve_slot = Column(Integer, ForeignKey(Slot.slot_id), unique=True)
-    user_id = Column(String(15), ForeignKey(User.user_id), unique=True)
-    begin_date = Column(DATETIME, unique=True)
-    end_date = Column(DATETIME, unique=True)
-    num_people = Column(Integer, unique=True)
+    id          = Column(Integer, primary_key=True, unique=True)
+    slot_id     = Column(Integer, ForeignKey(Slot.id), unique=True)
+    user_id     = Column(Integer, ForeignKey(User.id), unique=True)
+    begin_date  = Column(DATETIME, unique=True)
+    end_date    = Column(DATETIME, unique=True)
+    num_people  = Column(Integer, unique=True)
     reservation_purpose = Column(String(50))
 
-    user = relationship('User', backref = 'reservations')
-    slot = relationship('Slot', backref = 'reservations')
+    user        = relationship('User', backref = 'reservations')
+    slot        = relationship('Slot', backref = 'reservations')
 
-    def __init__(self, reservation_id=None, reservation_slot=None, user_id=None,
+    def __init__(self, id=None, slot_id=None, user_id=None,
             begin_date=None, end_date=None, num_people=None, reservation_purpose=None):
-            self.reservation_id = reservation_id
-            self.reserve_slot = reservation_slot
-            self.user_id = user_id
+            self.id         = id
+            self.slot_id    = slot_id
+            self.user_id    = user_id
             self.begin_date = begin_date
-            self.end_date = end_date
+            self.end_date   = end_date
             self.num_people = num_people
             self.reservation_purpose = reservation_purpose
 
@@ -179,33 +167,33 @@ class Reservation(Base):
         return '<예약 ID: %r, 예약 장소: %r, 예약 시작: %s, 예약 종료: %s' %(
             self.reservation_id, self.reservation_slot, self.begin_date, self.end_date)
 
+
 class Review(Base):
     __tablename__ = 'reviews'
     __table_args__ = {'mysql_collate': ' utf8_general_ci'}
-    review_number = Column(Integer, primary_key=True, unique=True)
-    user_id = Column(String(15), ForeignKey(User.user_id), unique=True)
-    location_number = Column(Integer, ForeignKey(Location.location_number), unique=True)
-    like_score = Column(Integer)
-    crowded_score = Column(Integer)
-    comment = Column(String(300))
-    timestamp = Column(TIMESTAMP, unique=True)
+    id              = Column(Integer, primary_key=True, unique=True)
+    user_id         = Column(Integer, ForeignKey(User.id), unique=True)
+    location_id     = Column(Integer, ForeignKey(Location.location_number), unique=True)
+    like_score      = Column(Integer)
+    crowded_score   = Column(Integer)
+    comment         = Column(String(300))
+    timestamp       = Column(TIMESTAMP, unique=True)
 
-    user = relationship('User', backref = 'reviews')
-    location = relationship('Location', backref = 'reviews')
+    user            = relationship('User', backref = 'reviews')
+    location        = relationship('Location', backref = 'reviews')
 
-    def __init__(self, review_number=None, user_id=None, location_number=None, like_score=None,
-            crowded_score=None, comment=None, timestamp=None):
-            self.review_number = review_number
-            self.user_id = user_id
-            self.location_number = location_number
-            self.like_score = like_score
-            self.crowded_score = crowded_score
-            self.comment = comment
-            self.timestamp = timestamp
+    def __init__(self, id=None, user_id=None, location_id=None,
+            like_score=None, crowded_score=None, comment=None, timestamp=None):
+            self.id             = id
+            self.user_id        = user_id
+            self.location_id    = location_id
+            self.like_score     = like_score
+            self.crowded_score  = crowded_score
+            self.comment        = comment
+            self.timestamp      = timestamp
 
     def __repr__(self):
-        return '<review number: %r, like_score: %r, crowded_score: %r>' %(
-            self.review_number, self.like_score, self.crowded_score)
+        return '<review id: %r, like_score: %r, crowded_score: %r>' %(self.id, self.like_score, self.crowded_score)
     
     like_score_to_text = ('선택하지 않음', '싫어요', '보통', '좋아요')
     def get_like_score_text(self):

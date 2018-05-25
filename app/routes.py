@@ -24,7 +24,7 @@ def login():
         return redirect("/")
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(user_id = form.userid.data).first()
+        user = User.query.filter_by(user_name = form.userid.data).first()
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
             return redirect(url_for('login'))
@@ -49,17 +49,17 @@ def review():
 def register():
     if current_user.is_authenticated:
         return redirect("/")
-    register = registerForm()
-    if register.validate_on_submit():
-        user = User(user_id = register.userid.data,user_name=register.username.data
-                , password = register.password.data)
+    register_form = registerForm()
+    if register_form.validate_on_submit():
+        user = User(user_name = register_form.userid.data, person_name=register_form.username.data
+                , password = register_form.password.data)
         db_session.add(user)
         db_session.commit()
         flash(' ID: {}, 이름={} 님의 회원가입이 완료되었습니다.'.format(
-            register.userid.data, register.username.data))
+            register_form.userid.data, register_form.username.data))
         return redirect("/")
 
-    return render_template('register.html', title='Register', form=register)
+    return render_template('register.html', title='Register', form=register_form)
 
 
 @app.route('/logout')
@@ -81,7 +81,7 @@ def locations():
 @app.route('/locations/<location_id>', methods=['GET','POST'])
 def view_location(location_id):
     """한 공부 장소에 대한 평점과 한줄평의 목록을 보여준다."""
-    location = Location.query.filter_by(location_number = location_id).first()
+    location = Location.query.filter_by(id = location_id).first()
 
     reviews_per_page = 5
     current_review = request.args.get('current_review', 0)
@@ -99,8 +99,8 @@ def view_location(location_id):
     else:
         review_pagination['next_page'] = 0
 
-    slot = Slot.query.filter_by(slot_location = location_id).all()
-    return render_template('location-view.html', title=location.location_name, location = location, review_pagination = review_pagination, slot= slot)
+    slot = Slot.query.filter_by(location_id = location_id).all()
+    return render_template('location-view.html', title=location.name, location = location, review_pagination = review_pagination, slot = slot)
 
 
 @app.route('/locations/<location_id>/review', methods=['GET','POST'])
@@ -111,15 +111,15 @@ def review_location(location_id):
 
     #user = User.query.filter_by(user_id = )
 
-    location = Location.query.filter_by(location_number = location_id).first()                  #TODO 존재하지 않는 location일 경우 처리
-    my_review = Review.query.filter_by(user_id = current_user.get_id(), location_number = location_id).first()
+    location = Location.query.filter_by(id = location_id).first()                  #TODO 존재하지 않는 location일 경우 처리
+    my_review = Review.query.filter_by(user_id = current_user.get_id(), location_id = location_id).first()
 
     form = ReviewForm()
     if request.method == 'POST':
         if form.submit_save.data:
             # 이미 저장한 review가 없으면 새로 생성한다. 
             if not my_review:
-                my_review = Review(user_id = current_user.get_id(), location_number = location_id)
+                my_review = Review(user_id = current_user.get_id(), location_id = location_id)
             
             my_review.like_score    = form.like_score.data
             my_review.crowded_score = form.crowded_score.data
@@ -140,33 +140,37 @@ def review_location(location_id):
         form.like_score.data    = str(my_review.like_score)
         form.crowded_score.data = str(my_review.crowded_score)
 
-    return render_template('location-review.html', title=location.location_name, form = form)
+    return render_template('location-review.html', title=location.name, form = form)
 
 
 @app.route('/locations/<location_id>/reservations')
 def choose_slot_for_location(location_id):
-    location = Location.query.filter_by(location_number = location_id).first()
-    slot = Slot.query.filter_by(slot_location = location.location_number).all()
+    location = Location.query.filter_by(id = location_id).first()
+    slot = Slot.query.filter_by(location_id = location.id).all()
     return render_template('location-rooms.html', title='Choose slot', location = location, slot = slot)
+
 
 @app.route('/locations/<location_id>/add_reservation', methods = ['GET','POST'])
 def add_reservation(location_id):
-    location = Location.query.filter_by(location_number = location_id).first()
-    slot = Slot.query.filter_by(slot_location = location.location_number).all()
+    location = Location.query.filter_by(id = location_id).first()
+    slot = Slot.query.filter_by(location_id = location.id).all()
     reservation_for_slot = Reservation.query.all()
     # return render_template('reserve-room.html', title = reservation, location = location, slot = slot, reservation = reservation_for_slot)
     return render_template('home.html')
+
+
 @app.route('/my_reservations', methods = ['GET','POST'])
 @login_required
 def my_reservations():
     my_reservations = Reservation.query.filter_by(user_id = current_user.id).all()
     return render_template('my-reservations.html', my_reservations = my_reservations)
 
+
 @app.route('/reservation/<reservation_id>', methods=['GET','POST'])
 @login_required
 def reservation_modify(reservation_id):
     """아직 구현된 링크가 없어 임시로 홈 화면으로 가도록 설정해놓았습니다."""
-    chosen_reservation = Reservation.query.filter_by(reservation_id = reservation_id).first()
-    if current_user.user_id != chosen_reservation.user_id:
+    chosen_reservation = Reservation.query.filter_by(id = reservation_id).first()
+    if current_user.id != chosen_reservation.user_id:
         return redirect(url_for('home'))
     return render_template('home.html')
