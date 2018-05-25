@@ -24,15 +24,13 @@
       {% for building_code, loc_list in locations|groupby('building_code') %}
 
         <section class="location-group-info">
-          <h2>{{ loc_list[0].building.building_name ~ ' (' ~ building_code ~ ')' }}</h2>
+          <h2>{{ loc_list[0].building.name ~ ' (' ~ building_code ~ ')' }}</h2>
           <div class="location-group-info__studylocations">
             {% for location in loc_list %}
-              {%if location.category_number == 4 %}
-              <a class="btn btn-primary" href="{{ url_for('view_location', location_id = location.location_number) }}">{{ location.location_name }}</a>
-              {% else %}
-              <a class="btn btn-info" href="{{ url_for('view_location', location_id = location.location_number) }}">{{ location.location_name }}</a>
-              {% endif %}
-              
+
+              <a class="btn {{ 'btn-primary' if location.slots else 'btn-info' }}"
+                 href="{{ url_for('view_location', location_id = location.id) }}">{{ location.name }}</a>
+
             {% endfor %}
           </div>
         </section>
@@ -40,22 +38,21 @@
       {% endfor %}
 
     {% else %}
-    
-      {% for category_number, loc_list in locations|groupby('category_number') %}
+
+      {% for category_id, loc_list in locations|groupby('category_id') %}
 
         <section class="location-group-info">
-          <h2>{{ loc_list[0].category.type }}</h2>
+          <h2>{{ loc_list[0].category.name }}</h2>
           <div style='line-height:200%' class="location-group-info__studylocations">
             {% for location in loc_list %}
-              {%if location.category_number == 4 %}
-              <a class="btn btn-primary" href="{{ url_for('view_location', location_id = location.location_number) }}">{{ location.location_name }}</a> ({{ location.building.building_name ~ ' (' ~ location.building_code ~ ')' }})
-              {% else %}
-              <a class="btn btn-info" href="{{ url_for('view_location', location_id = location.location_number) }}">{{ location.location_name }}</a> ({{ location.building.building_name ~ ' (' ~ location.building_code ~ ')' }})
-              {% endif %}
+
+              <a class="btn {{ 'btn-primary' if location.slots else 'btn-info' }}"
+                 href="{{ url_for('view_location', location_id = location.id) }}">{{ location.name }}</a> ({{ location.building.name ~ ' (' ~ location.building_code ~ ')' }})
+
             {% endfor %}
           </div>
         </section>
-        
+
       {% endfor %}
 
     {% endif %}

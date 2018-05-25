@@ -30,7 +30,7 @@
                          Home
                         <span class="sr-only">(current)</span></a>
                     </li>
-                    
+
                     {% if current_user.is_anonymous %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('register') }}">
@@ -49,12 +49,12 @@
                     {% endif %}
                 </ul>
             </div>
-            
+
           <ul class="navbar-nav px-3">
             <!-- 홈 화면에서 사용자의 이름을 확인할 수 있는 배너를 설정하였습니다. -->
             {% if not current_user.is_anonymous %}
                     <li class="nav-item active">
-                        <a class="nav-link"> 
+                        <a class="nav-link">
                         {{current_user.user_name}} 님, 환영합니다!</a>
                     <li class="nav-item text-nowrap">
                         <a class="nav-link" href="{{ url_for('logout') }}">
@@ -75,7 +75,7 @@
         </nav>
 
         <main role="main" class="container">
-        
+
         <div class="starter-template">
             {% for i in range(4) %}
             <br>

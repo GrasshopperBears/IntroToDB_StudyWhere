@@ -4,13 +4,13 @@
     <section class="samplebox ">
       <h1>내 예약 목록</h1>
     </section>
- 
+
 
     <section class="samplebox lead">
       {% if my_reservations %}
 
         <ul class="list-group">
-        
+
           {% for reservation in my_reservations %}
 
             <li class="list-group-item">
@@ -20,7 +20,7 @@
               </h2>
               {{reservation.begin_date}} ~ {{reservation.end_date}}
             </li>
-          
+
           {% endfor %}
 
         </ul>
