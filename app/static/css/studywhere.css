@@ -2,12 +2,8 @@ body {
   padding-top: 150px;
 }
 
-.col > section {
-  padding-top: 2em;
-}
-
-.col > section:first-child {
-  padding-top: 0;
+.col > section:not(:first-child) {
+  margin-top: 1em;
 }
 
 .samplebox {
