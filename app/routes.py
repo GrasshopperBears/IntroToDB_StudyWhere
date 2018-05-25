@@ -140,20 +140,65 @@ def review_location(location_id):
     return render_template('location-review.html', title=location.name, form = form)
 
 
-@app.route('/locations/<location_id>/reservations')
-def choose_slot_for_location(location_id):
-    location = Location.query.filter_by(id = location_id).first()
-    slot = Slot.query.filter_by(location_id = location.id).all()
-    return render_template('location-rooms.html', title='Choose slot', location = location, slot = slot)
+@app.route('/locations/<location_id>/slots', methods = ['GET','POST'])
+def view_location_slots(location_id):
+    """공부 장소 내의 세미나실의 예약 상태를 조회한다."""
+    from datetime import date, datetime, timedelta
 
+    def datetimerange(begin, end, step_minutes):
+        begin_minutes = round((begin.hour * 60 + begin.minute) / step_minutes) * step_minutes
+        dt = begin.replace(hour = begin_minutes // 60, minute = begin_minutes % 60, second = 0, microsecond = 0)
+        delta = timedelta(minutes = step_minutes)
+        while dt < end:
+            yield dt
+            dt = dt + delta
 
-@app.route('/locations/<location_id>/add_reservation', methods = ['GET','POST'])
-def add_reservation(location_id):
+    form = SlotDateForm()
+    if not form.date.data:
+        form.date.data = date.today()
+
+    current_date = form.date.data
+
     location = Location.query.filter_by(id = location_id).first()
-    slot = Slot.query.filter_by(location_id = location.id).all()
-    reservation_for_slot = Reservation.query.all()
-    # return render_template('reserve-room.html', title = reservation, location = location, slot = slot, reservation = reservation_for_slot)
-    return render_template('home.html')
+
+    #주중/주말에 따른 예약 가능 시간대를 확인한다.
+    if current_date.weekday == 5 or current_date.weekday == 6:
+        available_begin = location.available_begin_weekend
+        available_end   = location.available_end_weekend
+    else:
+        available_begin = location.available_begin_weekday
+        available_end   = location.available_end_weekday
+
+    #예약 가능한 시간대를 datetime 형식으로 변환한다
+    available_begin = datetime.combine(current_date, available_begin)
+    available_end   = datetime.combine(current_date, available_end)
+
+    SEGMENT_SIZE = app.config['RESERVATION_SEGMENT_SIZE']
+
+    for slot in location.slots:
+        segments = dict()
+
+        for dt in datetimerange(available_begin, available_end, SEGMENT_SIZE):
+            segments[dt] = { 'is_reserved': False }
+
+        #예약 가능한 시간대에 놓인 예약 항목을 불러온다
+        reservations = Reservation.query \
+            .filter(Reservation.slot_id == slot.id) \
+            .filter(Reservation.begin_date < available_end) \
+            .filter(Reservation.end_date > available_begin) \
+            .all()
+
+        for reservation in reservations:
+            for dt in datetimerange(reservation.begin_date, reservation.end_date, SEGMENT_SIZE):
+                if dt in segments:
+                    segments[dt]['is_reserved'] = True
+                    segments[dt]['person_name'] = reservation.user.person_name
+
+        if segments:
+            slot.segments = segments
+
+    return render_template('location-slots.html', title = location.name + ' 예약하기',
+        slots = location.slots, form = form)
 
 
 @app.route('/my_reservations', methods = ['GET','POST'])

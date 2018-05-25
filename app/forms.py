@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, BooleanField, SubmitField, TextAreaField, PasswordField, RadioField
+from wtforms import StringField, SelectField, BooleanField, SubmitField, TextAreaField, PasswordField, RadioField, DateField
 from wtforms.validators import ValidationError, DataRequired, EqualTo, Optional, Length
 
 
@@ -56,3 +56,7 @@ class ReservationForm(FlaskForm):
     purpose = TextAreaField('사용 목적을 입력해주세요.', validators = [Optional(), Length(max = 300)])
     submit_save = SubmitField('예약')
     submit_cancel = SubmitField('취소')
+
+class SlotDateForm(FlaskForm):
+    """예약할 세미나실을 선택할 때 날짜를 입력하는 폼"""
+    date = DateField('날짜 선택: ')

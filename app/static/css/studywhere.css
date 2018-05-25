@@ -21,7 +21,7 @@ body {
   height: 22px;
 }
 
-.slot-time {
+.slot__segment {
   font-size: 70%;
   width:  80px;
   height: 40px;
@@ -30,7 +30,7 @@ body {
   padding: 0.25em;
 }
 
-.slot-time--reserved {
+.slot__segment--reserved {
   background-color: #ffcccc;
   border-color: #ff8080;
 }
