@@ -1,29 +1,31 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <body>
-    <h1 >로그인해주세요.</h1>
-    <br>
-    <form class="form-signin", action="" method="post">
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.userid.label }}<br>
-            {{ form.userid(class="form-control", placeholder="아이디를 입력해주세요.", style="width:300px") }}
-            {% for error in form.userid.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.password.label }}<br>
-            {{ form.password(class="form-control",placeholder="비밀번호를 입력해주세요.",style="width:300px") }}
-            {% for error in form.password.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
-        <p>{{ form.submit(class="btn btn-lg btn-primary btn-block", style="height:50px; width:150px") }}</p>
-        <p>New User? <a href="{{ url_for('register') }}">Click to Register!</a></p>
 
-    </form>
-</body>
+<section>
+  <h1>로그인해주세요.</h1>
+  <br>
+  <form class="form-signin" method="POST">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.user_name.label }}<br>
+        {{ form.user_name(class="form-control", placeholder="아이디를 입력해주세요.", style="width: 300px") }}
+        {% for error in form.user_name.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.password.label }}<br>
+        {{ form.password(class="form-control",placeholder="비밀번호를 입력해주세요.",style="width:300px") }}
+        {% for error in form.password.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+    <p>{{ form.submit(class="btn btn-lg btn-primary btn-block", style="height:50px; width:150px") }}</p>
+    <p>New User? <a href="{{ url_for('register') }}">Click to Register!</a></p>
+
+  </form>
+</section>
+
 {% endblock %}
