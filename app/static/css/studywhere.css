@@ -1,3 +1,15 @@
+body {
+  padding-top: 100px;
+}
+
+.col > section {
+  padding-top: 2em;
+}
+
+.col > section:first-child {
+  padding-top: 0;
+}
+
 .samplebox {
   border: 1px solid gray;
   padding: 2em;

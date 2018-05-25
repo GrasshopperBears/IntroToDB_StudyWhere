@@ -75,22 +75,28 @@
     </ul>
   </nav>
 
-  <main role="main" class="container">
-
-    <div class="starter-template">
-      <br><br><br><br>
-      {% with messages = get_flashed_messages() %}
-        {% if messages %}
-          <ul>
-            {% for message in messages %}
-              <li>{{ message }}</li>
+  <main role="main" class="container"><div class="row justify-content-center">
+    <div class="col {{ col_classes|default('') }}">
+      {% with messages = get_flashed_messages(with_categories = true) %}
+      {% if messages %}
+        <section>
+          <ul class="list-group">
+            {% for category, message in messages %}
+              {% if category == 'error' %}
+                {% set message_class = 'list-group-item-danger' %}
+              {% else %}
+                {% set message_class = 'list-group-item-secondary' %}
+              {% endif %}
+              <li class="list-group-item {{ message_class }}">{{ message }}</li>
             {% endfor %}
           </ul>
-        {% endif %}
+        </section>
+      {% endif %}
       {% endwith %}
+
       {% block content %}{% endblock %}
     </div>
-  </main>
+  </div></main>
 
   <!-- Bootstrap core JavaScript
     ================================================== -->
