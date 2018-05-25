@@ -12,8 +12,8 @@ class User(UserMixin,Base):
     __table_args__ = {'mysql_collate': ' utf8_general_ci'}
     id            = Column(Integer, primary_key=True, unique=True)
     user_name     = Column(String(15), unique=True)
-    person_name   = Column(String(10))  # unique 할 필요는 없을 듯?
-    password_hash = Column(String(150)) # unique 할 필요는 없을 듯?
+    person_name   = Column(String(10))
+    password_hash = Column(String(150))
 
     def __init__(self, id = None, user_name = None, person_name = None, password = None):
         from werkzeug.security import generate_password_hash
