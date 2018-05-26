@@ -16,7 +16,7 @@
               <h2 class="reservation-title">
                 {{ reservation.slot.name }} &nbsp; 
                 <a class="btn btn-info lead" href="{{url_for('view_location_slots',
-                location_id = reservation.slot.location.id) }}">수정하기</a>
+                location_id = reservation.slot.location.id, begin_date = reservation.begin_date, slot_id = reservation.slot.id) }}">수정하기</a>
               </h2>
               {{reservation.begin_date}} ~ {{reservation.end_date}}
 

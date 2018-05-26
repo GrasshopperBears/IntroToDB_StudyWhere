@@ -145,6 +145,16 @@ def view_location_slots(location_id):
     """공부 장소 내의 세미나실의 예약 상태를 조회한다."""
     from datetime import date, datetime, timedelta
 
+    """ 수정 시의 에약을 삭제하기 위해 구현한 부분입니다."""
+    begin_date = request.args.get('begin_date')
+    slot_id = request.args.get('slot_id')
+    if begin_date and slot_id:
+        my_reservation = Reservation.query.filter(and_(Reservation.begin_date == begin_date, Reservation.slot_id == slot_id, Reservation.user_id == current_user.get_id())).first()
+        flash('기존 예약이 삭제되었습니다. 새로운 예약을 진행해주세요.')
+        db_session.delete(my_reservation)
+        db_session.commit()
+
+
     def datetimerange(begin, end, step_minutes):
         begin_minutes = round((begin.hour * 60 + begin.minute) / step_minutes) * step_minutes
         dt = begin.replace(hour = begin_minutes // 60, minute = begin_minutes % 60, second = 0, microsecond = 0)
@@ -221,8 +231,14 @@ def edit_reservation(location_id, slot_id):
     begin_date = datetime.datetime.strptime(begin_date_string, "%Y-%m-%d %H%M")
     reservable_time = slot.max_reserve_time
     my_reservation = Reservation.query.filter(and_(Reservation.slot_id == slot_id, Reservation.user_id == current_user.get_id())).first()
+    if not my_reservation:
+                my_reservation = Reservation(slot_id = slot_id, user_id = current_user.get_id())
+    else:
+        flash('하루에 예약은 한 건만 가능합니다. 기존에 있는 예약을 확인해주세요.')
+        return redirect(url_for('home'))
 
     reservation_form = ReservationForm()
+    """시작 시간 기준으로 뒤에 얼마만큼 예약이 가능한지를 확인하여 selectField에 반영합니다."""
     for i in range(1,slot.max_reserve_time+1):
         time_for_checking_maximum = str(int(begin_time) + i*100)
         date_string_for_checking_maximum = date + ' ' + time_for_checking_maximum
@@ -237,14 +253,10 @@ def edit_reservation(location_id, slot_id):
 
     if request.method == 'POST':
         if reservation_form.submit_save.data:
-            # 이미 저장한 review가 없으면 새로 생성한다.
+            # 이미 저장한 reservation가 없으면 새로 생성한다.
             end_time = str(int(begin_time) + reservation_form.using_time.data*100)
             end_time_string = date + ' ' + end_time
             end_date = datetime.datetime.strptime(end_time_string, "%Y-%m-%d %H%M")
-            if not my_reservation:
-                my_reservation = Reservation(slot_id = slot_id, user_id = current_user.get_id())
-            else:
-                db_session.delete(my_reservation)
             my_reservation.begin_date = begin_date
             my_reservation.end_date = end_date
             my_reservation.num_people = reservation_form.group_number.data
