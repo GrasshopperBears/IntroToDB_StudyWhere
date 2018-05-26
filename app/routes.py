@@ -208,15 +208,6 @@ def my_reservations():
     return render_template('my-reservations.html', my_reservations = my_reservations)
 
 
-@app.route('/reservation/<reservation_id>', methods=['GET','POST'])
-@login_required
-def reservation_modify(reservation_id):
-    """아직 구현된 링크가 없어 임시로 홈 화면으로 가도록 설정해놓았습니다."""
-    chosen_reservation = Reservation.query.filter_by(id = reservation_id).first()
-    if current_user.id != chosen_reservation.user_id:
-        return redirect(url_for('home'))
-    return render_template('home.html')
-
 @app.route('/locations/<location_id>/slots/<slot_id>', methods = ['GET','POST'])
 @login_required
 def edit_reservation(location_id, slot_id):
@@ -229,7 +220,7 @@ def edit_reservation(location_id, slot_id):
     begin_date_string = date + ' ' + begin_time
     begin_date = datetime.datetime.strptime(begin_date_string, "%Y-%m-%d %H%M")
     reservable_time = slot.max_reserve_time
-    my_reservation = Reservation.query.filter(and_(Reservation.slot_id == slot_id, Reservation.user_id == current_user.get_id(), Reservation.begin_date == begin_date)).first()
+    my_reservation = Reservation.query.filter(and_(Reservation.slot_id == slot_id, Reservation.user_id == current_user.get_id())).first()
 
     reservation_form = ReservationForm()
     for i in range(1,slot.max_reserve_time+1):
@@ -237,10 +228,9 @@ def edit_reservation(location_id, slot_id):
         date_string_for_checking_maximum = date + ' ' + time_for_checking_maximum
         date_for_checking_maximum = datetime.datetime.strptime(date_string_for_checking_maximum, "%Y-%m-%d %H%M")
         for j in range(len(reservation_for_slot)):
-            if date_for_checking_maximum > reservation_for_slot[j].begin_date:
+            if date_for_checking_maximum > reservation_for_slot[j].begin_date and begin_date < reservation_for_slot[j].begin_date:
                 reservable_time = i-1
                 break
-
 
     reservation_form.group_number.choices = [(i,i) for i in range(slot.minimum_capacity, slot.maximum_capacity+1)]
     reservation_form.using_time.choices = [(i,i) for i in range(1, reservable_time+1)]
@@ -253,7 +243,8 @@ def edit_reservation(location_id, slot_id):
             end_date = datetime.datetime.strptime(end_time_string, "%Y-%m-%d %H%M")
             if not my_reservation:
                 my_reservation = Reservation(slot_id = slot_id, user_id = current_user.get_id())
-
+            else:
+                db_session.delete(my_reservation)
             my_reservation.begin_date = begin_date
             my_reservation.end_date = end_date
             my_reservation.num_people = reservation_form.group_number.data

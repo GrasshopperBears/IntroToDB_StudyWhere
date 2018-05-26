@@ -1,9 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <section class="samplebox lead">
-      <h1>내 예약 목록</h1>
-    </section>
+    
+    <h2>내 예약 목록</h2>
 
 
     <section class="samplebox lead">
@@ -16,8 +15,8 @@
             <li class="list-group-item">
               <h2 class="reservation-title">
                 {{ reservation.slot.name }} &nbsp; 
-                <a class="btn btn-info lead" href="{{url_for('edit_reservation',
-                location_id = reservation.slot.location.id, slot_id = reservation.slot.id) }}">수정하기</a>
+                <a class="btn btn-info lead" href="{{url_for('view_location_slots',
+                location_id = reservation.slot.location.id) }}">수정하기</a>
               </h2>
               {{reservation.begin_date}} ~ {{reservation.end_date}}
 
