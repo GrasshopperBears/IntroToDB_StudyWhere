@@ -1,77 +1,66 @@
 {% extends "base.html" %}
-<div class="container"><div class="row"><div class="col-sm-8 offset-sm-2">
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <section class="samplebox flashes"><ul>
-          {% for message in messages %}
-            <li>{{ message }}</li>
-          {% endfor %}
-        </ul></section>
-      {% endif %}
-    {% endwith %}
 
 {% block content %}
 
-  <section class="samplebox lead">
-      <h1>{{ title }}</h1>
-      <form class="form-inline lead" method="POST">
-        {{ form.filter_type(class = 'form-control form-control-sm') }}
-        {{ form.filter_type.label }}
-      </form>
-  </section>
-  <section class="samplebox lead">
-    {% if form.filter_type.data == 'building' %}
-      {% for building_code, loc_list in locations|groupby('building_code') %}
+<section>
+    <h1>{{ title }}</h1>
+    <form class="form-inline" method="POST">
+      {{ form.filter_type(class = 'form-control form-control-sm') }}
+      {{ form.filter_type.label }}
+    </form>
+</section>
 
-        <section class="location-group-info">
-          <h2>{{ loc_list[0].building.building_name ~ ' (' ~ building_code ~ ')' }}</h2>
-          <div class="location-group-info__studylocations">
-            {% for location in loc_list %}
-              {%if location.category_number == 4 %}
-              <a class="btn btn-primary" href="{{ url_for('view_location', location_id = location.location_number) }}">{{ location.location_name }}</a>
-              {% else %}
-              <a class="btn btn-info" href="{{ url_for('view_location', location_id = location.location_number) }}">{{ location.location_name }}</a>
-              {% endif %}
-              
-            {% endfor %}
-          </div>
-        </section>
+<section>
+  {% if form.filter_type.data == 'building' %}
 
-      {% endfor %}
+    {% for building_code, loc_list in locations|groupby('building_code') %}
 
-    {% else %}
-    
-      {% for category_number, loc_list in locations|groupby('category_number') %}
+      <section class="location-group-info">
+        <h2>{{ loc_list[0].building.name ~ ' (' ~ building_code ~ ')' }}</h2>
+        <div class="location-group-info__studylocations">
+          {% for location in loc_list %}
 
-        <section class="location-group-info">
-          <h2>{{ loc_list[0].category.type }}</h2>
-          <div style='line-height:200%' class="location-group-info__studylocations">
-            {% for location in loc_list %}
-              {%if location.category_number == 4 %}
-              <a class="btn btn-primary" href="{{ url_for('view_location', location_id = location.location_number) }}">{{ location.location_name }}</a> ({{ location.building.building_name ~ ' (' ~ location.building_code ~ ')' }})
-              {% else %}
-              <a class="btn btn-info" href="{{ url_for('view_location', location_id = location.location_number) }}">{{ location.location_name }}</a> ({{ location.building.building_name ~ ' (' ~ location.building_code ~ ')' }})
-              {% endif %}
-            {% endfor %}
-          </div>
-        </section>
-        
-      {% endfor %}
+            <a class="btn {{ 'btn-primary' if location.slots else 'btn-secondary' }} mb-1"
+                href="{{ url_for('view_location', location_id = location.id) }}">{{ location.name }} <small class="badge badge-light">{{ location.category.name }}</small></a>
 
-    {% endif %}
-  </section>
+          {% endfor %}
+        </div>
+      </section>
+
+    {% endfor %}
+
+  {% else %}
+
+    {% for category_id, loc_list in locations|groupby('category_id') %}
+
+      <section class="location-group-info">
+        <h2>{{ loc_list[0].category.name }}</h2>
+        <div style='line-height:200%' class="location-group-info__studylocations">
+          {% for location in loc_list %}
+
+            <a class="btn {{ 'btn-primary' if location.slots else 'btn-secondary' }} mb-1"
+                href="{{ url_for('view_location', location_id = location.id) }}">{{ location.name }} <small class="badge badge-light" title="{{ location.building.name }}">{{ location.building_code }}</small></a>
+
+
+          {% endfor %}
+        </div>
+      </section>
+
+    {% endfor %}
+
+  {% endif %}
+</section>
 
 {% endblock %}
- </div></div></div>
 
 {% block scripts %}
 
-  <script>
-    $(function () {
-      $('#{{ form.filter_type.id }}').change(function () {
-        $(this).closest('form').submit();
-      });
+<script>
+  $(function () {
+    $('#{{ form.filter_type.id }}').change(function () {
+      $(this).closest('form').submit();
     });
-  </script>
+  });
+</script>
 
 {% endblock %}

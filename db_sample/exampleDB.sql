@@ -1,13 +1,13 @@
--- MySQL dump 10.13  Distrib 5.7.22, for Win32 (AMD64)
+-- MySQL dump 10.13  Distrib 8.0.11, for Win64 (x86_64)
 --
--- Host: wheretostudy.cjeg0lv6iq2a.ap-northeast-2.rds.amazonaws.com    Database: wheretostudy
+-- Host: localhost    Database: wheretostudy
 -- ------------------------------------------------------
--- Server version	5.6.39-log
+-- Server version	8.0.11
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+ SET NAMES utf8 ;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -21,11 +21,11 @@
 
 DROP TABLE IF EXISTS `buildings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `buildings` (
-  `building_number` varchar(6) NOT NULL,
+  `building_code` varchar(6) NOT NULL,
   `name` varchar(80) NOT NULL,
-  PRIMARY KEY (`building_number`)
+  PRIMARY KEY (`building_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -45,7 +45,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `location_categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `location_categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL,
@@ -69,7 +69,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `locations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `locations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(30) DEFAULT NULL,
@@ -82,8 +82,8 @@ CREATE TABLE `locations` (
   PRIMARY KEY (`id`),
   KEY `fk_LOCATION_CATEGORY_idx` (`category_id`),
   KEY `fk_LOCATION_BUILDING1_idx` (`building_code`),
-  CONSTRAINT `fk_LOCATION_BUILDING1` FOREIGN KEY (`building_code`) REFERENCES `buildings` (`building_number`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_LOCATION_CATEGORY` FOREIGN KEY (`category_id`) REFERENCES `location_categories` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_LOCATION_BUILDING1` FOREIGN KEY (`building_code`) REFERENCES `buildings` (`building_code`),
+  CONSTRAINT `fk_LOCATION_CATEGORY` FOREIGN KEY (`category_id`) REFERENCES `location_categories` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -103,7 +103,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `reservations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `reservations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `slot_id` int(11) NOT NULL,
@@ -117,8 +117,8 @@ CREATE TABLE `reservations` (
   KEY `begin_date_index` (`begin_date`),
   KEY `end_date_index` (`end_date`),
   KEY `fk_reservation_user1_idx` (`user_id`),
-  CONSTRAINT `fk_RESERVATION_SLOT1` FOREIGN KEY (`slot_id`) REFERENCES `slots` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_reservation_user1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_RESERVATION_SLOT1` FOREIGN KEY (`slot_id`) REFERENCES `slots` (`id`),
+  CONSTRAINT `fk_reservation_user1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -137,7 +137,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `reviews`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `reviews` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
@@ -149,8 +149,8 @@ CREATE TABLE `reviews` (
   PRIMARY KEY (`id`),
   KEY `fk_REVIEW_LOCATION1_idx` (`location_id`),
   KEY `fk_review_user1_idx` (`user_id`),
-  CONSTRAINT `fk_REVIEW_LOCATION1` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_review_user1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_REVIEW_LOCATION1` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`),
+  CONSTRAINT `fk_review_user1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -170,7 +170,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `slots`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `slots` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
@@ -180,7 +180,7 @@ CREATE TABLE `slots` (
   `maximum_capacity` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_SLOT_LOCATION1_idx` (`location_id`),
-  CONSTRAINT `fk_SLOT_LOCATION1` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_SLOT_LOCATION1` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -200,7 +200,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_name` varchar(15) NOT NULL,
@@ -237,4 +237,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-25 16:14:26
+-- Dump completed on 2018-05-25 17:02:27

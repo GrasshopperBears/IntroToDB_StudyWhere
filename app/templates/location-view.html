@@ -10,10 +10,9 @@
     <div>혼잡도: {{ location.get_avg_crowded_score()|default('(평가해 주세요)', true) }}</div>
 
     <div>
-      <a class="btn btn-primary " href="{{ url_for('review_location', location_id = location.location_number) }}">
-      평가하기</a>
-      {% if slot %}
-        <a class="btn btn-primary", href="{{url_for('add_reservation', location_id = location.location_number)}}">예약하기</a>
+      <a class="btn btn-primary" href="{{ url_for('review_location', location_id = location.id) }}">평가하기</a>
+      {% if location.slots %}
+        <a class="btn btn-primary", href="{{url_for('view_location_slots', location_id = location.id)}}">예약하기</a>
       {% endif %}
     </div>
   </section>
@@ -37,9 +36,9 @@
         </section>
 
       {% endfor %}
-    
+
     {% else %}
-    
+
       <section class="location-review">
         (평가가 없습니다)
       </section>
@@ -49,17 +48,17 @@
     <nav aria-label="한줄평 더 보기" style="float: none; margin: auto;">
       <ul class="pagination justify-content-center mt-2">
         <li class="page-item {{ 'disabled' if review_pagination.prev_page >= review_pagination.current_page else '' }}">
-          <a class="page-link" href="{{ url_for('locations', location_id = location.location_number, current_review = 0) }}">&lt;</a>
+          <a class="page-link" href="{{ url_for('locations', location_id = location.id, current_review = 0) }}">&lt;</a>
         </li>
 
         {% for page_num in review_pagination.pages %}
           <li class="page-item {{ 'active' if page_num == review_pagination.current_page else '' }}">
-            <a class="page-link" href="{{ url_for('locations', location_id = location.location_number, current_review = page_num) }}">{{ loop.index }}</a>
+            <a class="page-link" href="{{ url_for('locations', location_id = location.id, current_review = page_num) }}">{{ loop.index }}</a>
           </li>
         {% endfor %}
 
         <li class="page-item {{ 'disabled' if review_pagination.next_page <= review_pagination.current_page else '' }}">
-          <a class="page-link" href="{{ url_for('locations', location_id = location.location_number, current_review = 0) }}">&gt;</a>
+          <a class="page-link" href="{{ url_for('locations', location_id = location.id, current_review = 0) }}">&gt;</a>
         </li>
       </ul>
     </nav>

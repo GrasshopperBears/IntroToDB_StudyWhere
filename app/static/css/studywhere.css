@@ -1,3 +1,11 @@
+body {
+  padding-top: 150px;
+}
+
+.col > section:not(:first-child) {
+  margin-top: 1em;
+}
+
 .samplebox {
   border: 1px solid gray;
   padding: 2em;
@@ -13,7 +21,11 @@
   height: 22px;
 }
 
-.slot-time {
+.slot__tags {
+  margin-bottom: 0.5em;
+}
+
+.slot__segment {
   font-size: 70%;
   width:  80px;
   height: 40px;
@@ -22,11 +34,17 @@
   padding: 0.25em;
 }
 
-.slot-time--reserved {
+.slot__segment--reserved {
   background-color: #ffcccc;
   border-color: #ff8080;
 }
 
 .reservation-title {
   font-size: 120%;
+}
+
+.credentials-form input[type=text],
+.credentials-form input[type=password]
+{
+  max-width: 300px;
 }
