@@ -32,7 +32,7 @@
 -	maximum_capacity (INT)
 
 [TABLE] reservations
--	id (INT) , not NULL
+-	id (INT) , not NULL, PK
 -	slot_id (INT) , not NULL, FK to SLOT.slot_id
 -	user_id (INT) , not NULL, FK to USER.user_id
 -	begin_date (DATETIME) , not NULL
@@ -40,11 +40,19 @@
 -	num_people (INT) , not NULL
 -	reservation_purpose (VARCHAR(50))
 
-[TABLE] reviews
--	id (INT) , not NULL
+[TABLE] reviews	-----------------scores TABLE와 연결된 trigger
+-	id (INT) , not NULL, PK
 -	user_id (INT) , not NULL
 -	location_id (INT) , not NULL
 -	like_score (INT)
 -	crowded_score (INT)
 -	comment (VARCHAR(300))
 -	timestamp (DATETIME) , not NULL
+
+[TABLE] scores
+-	id (INT) , not NULL, PK
+-	location_id (INT) , not NULL
+-	avg_like_score (DECIMAL(3, 2))
+-	num_like_score (INT)
+-	avg_crowded_score (DECIMAL(3, 2))
+-	num_like_score (INT)
