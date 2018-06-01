@@ -215,7 +215,7 @@ def view_location_slots(location_id):
 @login_required
 def my_reservations():
     my_reservations = Reservation.query.filter_by(user_id = current_user.id).all()
-    return render_template('my-reservations.html', my_reservations = my_reservations)
+    return render_template('my-reservations.html', title = 'My Reservation', my_reservations = my_reservations)
 
 
 @app.route('/locations/<location_id>/slots/<slot_id>', methods = ['GET','POST'])
