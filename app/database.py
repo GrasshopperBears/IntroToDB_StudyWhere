@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-engine = create_engine('mysql://root:0000@localhost:3306/wheretostudy?charset=utf8', convert_unicode=True)
+engine = create_engine('mysql://starday123:qwerty123@wheretostudy.cjeg0lv6iq2a.ap-northeast-2.rds.amazonaws.com/wheretostudy?charset=utf8', convert_unicode=True)
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
                                          bind=engine))

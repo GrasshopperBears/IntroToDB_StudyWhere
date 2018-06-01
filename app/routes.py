@@ -237,12 +237,40 @@ def edit_reservation(location_id, slot_id):
         flash('하루에 예약은 한 건만 가능합니다. 기존에 있는 예약을 확인해주세요.')
         return redirect(url_for('home'))
 
+    """time string을 만들기 위해 사용할 것입니다."""
+    def timemaker(time):
+        if time == 0:
+            return '0000'
+        elif 100 <= time <= 900:
+            return '0'+str(time)
+        else:
+            return str(time)
+
     reservation_form = ReservationForm()
     """시작 시간 기준으로 뒤에 얼마만큼 예약이 가능한지를 확인하여 selectField에 반영합니다."""
     for i in range(1,slot.max_reserve_time+1):
-        time_for_checking_maximum = str(int(begin_time) + i*100)
-        date_string_for_checking_maximum = date + ' ' + time_for_checking_maximum
-        date_for_checking_maximum = datetime.datetime.strptime(date_string_for_checking_maximum, "%Y-%m-%d %H%M")
+        time_for_checking_maximum = int(begin_time) + i*100
+        if time_for_checking_maximum >= 2400:
+            date_string_for_checking_maximum = date + ' ' + timemaker(time_for_checking_maximum-2400)
+            date_for_checking_maximum = datetime.datetime.strptime(date_string_for_checking_maximum, "%Y-%m-%d %H%M")
+            replace_day = date_for_checking_maximum.day + 1
+            corres_month = date_for_checking_maximum.month
+            if corres_month is 1 or 3 or 5 or 7 or 8 or 10 or 12:
+                if replace_day > 31:
+                    replace_day -= 31
+                    corres_month += 1
+            elif corres_month is 4 or 6 or 9 or 11:
+                if replace_day > 30:
+                    replace_day -= 30
+                    corres_month += 1
+            else:
+                if replace_day > 28:
+                    replace_day -= 28
+                    corres_month += 1
+            date_for_checking_maximum = date_for_checking_maximum.replace(month = corres_month, day = replace_day)
+        else:
+            date_string_for_checking_maximum = date + ' ' + timemaker(time_for_checking_maximum)
+            date_for_checking_maximum = datetime.datetime.strptime(date_string_for_checking_maximum, "%Y-%m-%d %H%M")
         for j in range(len(reservation_for_slot)):
             if date_for_checking_maximum > reservation_for_slot[j].begin_date and begin_date < reservation_for_slot[j].begin_date:
                 reservable_time = i-1
@@ -254,9 +282,29 @@ def edit_reservation(location_id, slot_id):
     if request.method == 'POST':
         if reservation_form.submit_save.data:
             # 이미 저장한 reservation가 없으면 새로 생성한다.
-            end_time = str(int(begin_time) + reservation_form.using_time.data*100)
-            end_time_string = date + ' ' + end_time
-            end_date = datetime.datetime.strptime(end_time_string, "%Y-%m-%d %H%M")
+            end_time_int  = int(begin_time) + reservation_form.using_time.data*100
+            if end_time_int >= 2400:
+                end_time_string = date + ' ' + timemaker(end_time_int-2400)
+                end_date = datetime.datetime.strptime(end_time_string, "%Y-%m-%d %H%M")
+                replace_day = end_date.day + 1
+                corres_month = end_date.month
+                if corres_month is 1 or 3 or 5 or 7 or 8 or 10 or 12:
+                    if replace_day > 31:
+                        replace_day -= 31
+                        corres_month += 1
+                elif corres_month is 4 or 6 or 9 or 11:
+                    if replace_day > 30:
+                        replace_day -= 30
+                        corres_month += 1
+                else:
+                    if replace_day > 28:
+                        replace_day -= 28
+                        corres_month += 1
+                end_date = end_date.replace(month = corres_month, day = replace_day)
+            else:
+                end_time_string = date + ' ' + end_time
+                end_date = datetime.datetime.strptime(end_time_string, "%Y-%m-%d %H%M")
+            
             my_reservation.begin_date = begin_date
             my_reservation.end_date = end_date
             my_reservation.num_people = reservation_form.group_number.data
