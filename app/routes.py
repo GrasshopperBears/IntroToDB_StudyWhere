@@ -302,7 +302,7 @@ def edit_reservation(location_id, slot_id):
                         corres_month += 1
                 end_date = end_date.replace(month = corres_month, day = replace_day)
             else:
-                end_time_string = date + ' ' + end_time
+                end_time_string = date + ' ' + timemaker(end_time_int)
                 end_date = datetime.datetime.strptime(end_time_string, "%Y-%m-%d %H%M")
             
             my_reservation.begin_date = begin_date
