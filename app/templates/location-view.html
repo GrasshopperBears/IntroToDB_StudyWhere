@@ -18,9 +18,10 @@
   </section>
 
   <section class="samplebox lead">
-    {% if location.reviews %}
+    {% set review_page = reviews[review_begin:review_begin + reviews_per_page] %}
+    {% if review_page %}
 
-      {% for review in location.reviews %}
+      {% for review in review_page %}
 
         <section class="location-review">
           익명
@@ -57,18 +58,18 @@
 
     <nav aria-label="한줄평 더 보기" style="float: none; margin: auto;">
       <ul class="pagination justify-content-center mt-2">
-        <li class="page-item {{ 'disabled' if review_pagination.prev_page >= review_pagination.current_page else '' }}">
-          <a class="page-link" href="{{ url_for('locations', location_id = location.id, current_review = 0) }}">&lt;</a>
+        <li class="page-item {{ 'disabled' if review_begin < reviews_per_page else '' }}">
+          <a class="page-link" href="{{ url_for('view_location', location_id=location.id, review=review_begin - reviews_per_page) }}">&lt;</a>
         </li>
 
-        {% for page_num in review_pagination.pages %}
-          <li class="page-item {{ 'active' if page_num == review_pagination.current_page else '' }}">
-            <a class="page-link" href="{{ url_for('locations', location_id = location.id, current_review = page_num) }}">{{ loop.index }}</a>
+        {% for review_num in range(0, reviews|length, reviews_per_page) %}
+          <li class="page-item {{ 'active' if review_num == review_begin else '' }}">
+            <a class="page-link" href="{{ url_for('view_location', location_id=location.id, review=review_num) }}">{{ loop.index }}</a>
           </li>
         {% endfor %}
 
-        <li class="page-item {{ 'disabled' if review_pagination.next_page <= review_pagination.current_page else '' }}">
-          <a class="page-link" href="{{ url_for('locations', location_id = location.id, current_review = 0) }}">&gt;</a>
+        <li class="page-item {{ 'disabled' if review_begin + reviews_per_page >= (reviews|length) else '' }}">
+          <a class="page-link" href="{{ url_for('view_location', location_id=location.id, review=review_begin + reviews_per_page) }}">&gt;</a>
         </li>
       </ul>
     </nav>

@@ -97,22 +97,13 @@ def view_location(location_id):
     location = Location.query.filter_by(id = location_id).first()
 
     reviews_per_page = 5
-    current_review = request.args.get('current_review', 0)
-    review_pages = [ i for i in range(0, len(location.reviews), reviews_per_page) ]
-    current_page = current_review // reviews_per_page * reviews_per_page
-    review_pagination = {
-        'current_review': current_review,
-        'reviews_per_page': reviews_per_page,
-        'pages': review_pages,
-        'current_page': current_page
-    }
-    review_pagination['prev_page'] = max(0, current_page - reviews_per_page)
-    if review_pages:
-        review_pagination['next_page'] = min(review_pages[-1], current_page + reviews_per_page)
-    else:
-        review_pagination['next_page'] = 0
+    review_begin = request.args.get('review', 0, type=int)
 
-    return render_template('location-view.html', title=location.name, location=location, review_pagination=review_pagination)
+    return render_template('location-view.html', title=location.name,
+                           location=location,
+                           reviews=location.reviews,
+                           review_begin=review_begin,
+                           reviews_per_page=reviews_per_page)
 
 
 @app.route('/locations/<location_id>/review', methods=['GET', 'POST'])
