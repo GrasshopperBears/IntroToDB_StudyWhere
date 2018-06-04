@@ -24,20 +24,26 @@
           <img class="rating-icon rating-icon--small"
             alt="만족도: {{ review.get_like_score_text() }}"
             title="만족도: {{ review.get_like_score_text() }}"
+            data-toggle="tooltip"
             src="/static/images/like-{{ review.like_score }}.png">
           <img class="rating-icon rating-icon--small"
             alt="사람 수: {{ review.get_crowded_score_text() }}"
             title="사람 수: {{ review.get_crowded_score_text() }}"
+            data-toggle="tooltip"
             src="/static/images/crowd-{{ review.crowded_score }}.png">
-          {% if review.comment %}
-            {% if review.comment|length > 50 %}
-              {{review.comment[:50] + '...'}}
+          <span class="location-review__comment"
+            title="{{ review.comment }}"
+            data-toggle="tooltip">
+            {% if review.comment %}
+              {% if review.comment|length > 50 %}
+                {{review.comment[:50] + '...'}}
+              {% else %}
+                {{review.comment[:50]}}
+              {% endif %}
             {% else %}
-              {{review.comment[:50]}}
+              {{'(한줄평 없음)'}}
             {% endif %}
-          {% else %}
-            {{ '(한줄평 없음.)' }}
-          {% endif %}
+          </span>
 
         </li>
       {% endfor %}
@@ -45,5 +51,15 @@
 
   </section>
 {% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+  });
+</script>
 
 {% endblock %}
