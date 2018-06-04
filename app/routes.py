@@ -15,7 +15,20 @@ from sqlalchemy import and_
 
 @app.route('/')
 def home():
-    return render_template('home.html', title='Home')
+    from sqlalchemy import func, desc
+
+    top_5 = db_session \
+        .query(Location.id) \
+        .order_by(desc(Location.avg_like_score)) \
+        .subquery()
+
+    reviews = db_session \
+        .query(Review) \
+        .filter(Review.location_id.in_(top_5)) \
+        .order_by(desc(Review.timestamp)) \
+        .limit(5)
+
+    return render_template('home.html', title = 'Home', recent_reviews = reviews)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -304,7 +317,7 @@ def edit_reservation(location_id, slot_id):
             else:
                 end_time_string = date + ' ' + timemaker(end_time_int)
                 end_date = datetime.datetime.strptime(end_time_string, "%Y-%m-%d %H%M")
-            
+
             my_reservation.begin_date = begin_date
             my_reservation.end_date = end_date
             my_reservation.num_people = reservation_form.group_number.data

@@ -9,6 +9,18 @@
   다른 사람들이 남긴 평가를 통해 자신에게 맞는 최적의 공부장소를 찾아보세요.<br>
   공부할 세미나실을 예약하세요.</p>
   <p class="mt-5 mb-3 text-muted">&copy; by 강예형, 김창연, 이진우</p>
+
+  {% if recent_reviews %}
+
+    <br>
+    <h2>최근 리뷰</h2>
+    {% for review in recent_reviews %}
+
+      <p><b>{{ review.location.name }}</b>: ({{ review.like_score }}점) {{ review.comment }}</p>
+
+    {% endfor %}
+
+  {% endif %}
 </section>
 
 {% endblock %}
