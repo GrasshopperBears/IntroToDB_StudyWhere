@@ -9,18 +9,41 @@
   다른 사람들이 남긴 평가를 통해 자신에게 맞는 최적의 공부장소를 찾아보세요.<br>
   공부할 세미나실을 예약하세요.</p>
   <p class="mt-5 mb-3 text-muted">&copy; by 강예형, 김창연, 이진우</p>
-
-  {% if recent_reviews %}
-
-    <br>
-    <h2>최근 리뷰</h2>
-    {% for review in recent_reviews %}
-
-      <p><b>{{ review.location.name }}</b>: ({{ review.like_score }}점) {{ review.comment }}</p>
-
-    {% endfor %}
-
-  {% endif %}
 </section>
+
+{% if recent_reviews %}
+  <section class="recent-reviews">
+    <br>
+    <h1>최근 리뷰</h1>
+
+    <ul class="list-group">
+      {% for review in recent_reviews %}
+        <li class="list-group-item">
+
+          <b>{{ review.location.name }}</b>:
+          <img class="rating-icon rating-icon--small"
+            alt="만족도: {{ review.get_like_score_text() }}"
+            title="만족도: {{ review.get_like_score_text() }}"
+            src="/static/images/like-{{ review.like_score }}.png">
+          <img class="rating-icon rating-icon--small"
+            alt="사람 수: {{ review.get_crowded_score_text() }}"
+            title="사람 수: {{ review.get_crowded_score_text() }}"
+            src="/static/images/crowd-{{ review.crowded_score }}.png">
+          {% if review.comment %}
+            {% if review.comment|length > 50 %}
+              {{review.comment[:50] + '...'}}
+            {% else %}
+              {{review.comment[:50]}}
+            {% endif %}
+          {% else %}
+            {{ '(한줄평 없음.)' }}
+          {% endif %}
+
+        </li>
+      {% endfor %}
+    </ul>
+
+  </section>
+{% endif %}
 
 {% endblock %}

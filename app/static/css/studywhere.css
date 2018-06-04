@@ -21,6 +21,11 @@ body {
   height: 22px;
 }
 
+.rating-icon--small {
+  width:  16px;
+  height: 16px;
+}
+
 .slot__tags {
   margin-bottom: 0.5em;
 }
@@ -47,4 +52,21 @@ body {
 .credentials-form input[type=password]
 {
   max-width: 300px;
+}
+
+.recent-reviews
+{
+  font-size: 75%;
+  padding-bottom: 5em;
+}
+
+.recent-reviews h1
+{
+  font-size: 120%;
+  font-weight: bold;
+  padding-left: 1em;
+}
+
+.recent-reviews li {
+  padding: 0.5em;
 }
