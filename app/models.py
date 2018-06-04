@@ -1,6 +1,6 @@
 # -- coding: utf-8 --
 
-from sqlalchemy import Column, Integer, String, ForeignKey, TIME, DATETIME, TIMESTAMP
+from sqlalchemy import Column, Integer, String, ForeignKey, TIME, DATETIME, TIMESTAMP, Float
 from sqlalchemy.orm import relationship, backref
 from app.database import Base, db_session
 from flask_login import UserMixin
@@ -73,6 +73,10 @@ class Location(Base):
     available_end_weekday   = Column(TIME)
     available_begin_weekend = Column(TIME)
     available_end_weekend   = Column(TIME)
+    avg_like_score    = Column(Float)
+    num_like_score    = Column(Integer)
+    avg_crowded_score = Column(Float)
+    num_crowded_score = Column(Integer)
 
     building        = relationship('Building', backref = 'locations')
     category        = relationship('LocationCategory', backref = 'locations')
@@ -87,29 +91,35 @@ class Location(Base):
         self.available_end_weekday      = aew
         self.available_begin_weekend    = a_b_end
         self.available_end_weekend      = a_e_end
+        self.avg_like_score = 0.0
+        self.num_like_score = 0
+        self.avg_crowded_score = 0.0
+        self.num_like_score = 0
 
     def __repr__(self):
         return '<Location id: %r, name: %r, building code: %r>' %(self.id, self.name, self.building_code)
 
     def get_avg_like_score(self):
-        from sqlalchemy.sql import func
-        result = db_session.query(func.avg(Review.like_score).label('average')) \
-                           .filter(Review.location_id == self.id, Review.like_score != 0) \
-                           .first()
-        if result.average:
-            return float(result.average)
-        else:
-            return None
+        # from sqlalchemy.sql import func
+        # result = db_session.query(func.avg(Review.like_score).label('average')) \
+        #                    .filter(Review.location_id == self.id, Review.like_score != 0) \
+        #                    .first()
+        # if result.average:
+        #     return float(result.average)
+        # else:
+        #     return None
+        return self.avg_like_score
 
     def get_avg_crowded_score(self):
-        from sqlalchemy.sql import func
-        result = db_session.query(func.avg(Review.crowded_score).label('average')) \
-                           .filter(Review.location_id == self.id, Review.crowded_score != 0) \
-                           .first()
-        if result.average:
-            return float(result.average)
-        else:
-            return None
+        # from sqlalchemy.sql import func
+        # result = db_session.query(func.avg(Review.crowded_score).label('average')) \
+        #                    .filter(Review.location_id == self.id, Review.crowded_score != 0) \
+        #                    .first()
+        # if result.average:
+        #     return float(result.average)
+        # else:
+        #     return None
+        return self.avg_crowded_score
 
 
 class Slot(Base):
