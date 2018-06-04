@@ -32,8 +32,18 @@
             alt="사람 수: {{ review.get_crowded_score_text() }}"
             title="사람 수: {{ review.get_crowded_score_text() }}"
             src="/static/images/crowd-{{ review.crowded_score }}.png">
-          {{ review.comment[:50] if review.comment else '(한줄평 없음)' }}
-        </section>
+          {% if review.comment %}
+            {% if review.comment|length > 50 %}
+              {{review.comment[:50] + '...'}}
+            {% else %}
+              {{review.comment[:50]}}
+            {% endif %}
+          {% else %}
+            {{'(한줄평 없음.)'}}
+          {% endif %}
+
+        <!--   {{ review.comment[:50] if review.comment else '(한줄평 없음)' }}
+         --></section>
 
       {% endfor %}
 
