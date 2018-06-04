@@ -2,37 +2,42 @@
 
 {% block content %}
 
-  <section class="samplebox lead">
-    <h1>{{ title }}</h1>
-    <div>이용 시간 (평일): {{ location.available_begin_weekday }} ~ {{ location.available_end_weekday }}</div>
-    <div>이용 시간 (주말): {{ location.available_begin_weekend }} ~ {{ location.available_end_weekend }}</div>
-    <div>만족도: {{ location.get_avg_like_score()|default('(평가해 주세요)', true) }}</div>
-    <div>혼잡도: {{ location.get_avg_crowded_score()|default('(평가해 주세요)', true) }}</div>
+<section class="samplebox lead">
+  <h1>{{ title }}</h1>
+  <div>이용 시간 (평일): {{ location.available_begin_weekday }} ~ {{ location.available_end_weekday }}</div>
+  <div>이용 시간 (주말): {{ location.available_begin_weekend }} ~ {{ location.available_end_weekend }}</div>
+  <div>만족도: {{ location.get_avg_like_score()|default('(평가해 주세요)', true) }}</div>
+  <div>혼잡도: {{ location.get_avg_crowded_score()|default('(평가해 주세요)', true) }}</div>
 
-    <div>
-      <a class="btn btn-primary" href="{{ url_for('review_location', location_id = location.id) }}">평가하기</a>
-      {% if location.slots %}
-        <a class="btn btn-primary", href="{{url_for('view_location_slots', location_id = location.id)}}">예약하기</a>
-      {% endif %}
-    </div>
-  </section>
+  <div>
+    <a class="btn btn-primary" href="{{ url_for('review_location', location_id = location.id) }}">평가하기</a>
+    {% if location.slots %}
+      <a class="btn btn-primary", href="{{url_for('view_location_slots', location_id = location.id)}}">예약하기</a>
+    {% endif %}
+  </div>
+</section>
 
-  <section class="samplebox lead">
-    {% set review_page = reviews[review_begin:review_begin + reviews_per_page] %}
-    {% if review_page %}
+<section class="samplebox lead">
+  {% set review_page = reviews[review_begin:review_begin + reviews_per_page] %}
+  {% if review_page %}
 
-      {% for review in review_page %}
+    {% for review in review_page %}
 
-        <section class="location-review">
-          익명
-          <img class="rating-icon"
-            alt="만족도: {{ review.get_like_score_text() }}"
-            title="만족도: {{ review.get_like_score_text() }}"
-            src="/static/images/like-{{ review.like_score }}.png">
-          <img class="rating-icon"
-            alt="사람 수: {{ review.get_crowded_score_text() }}"
-            title="사람 수: {{ review.get_crowded_score_text() }}"
-            src="/static/images/crowd-{{ review.crowded_score }}.png">
+      <section class="location-review">
+        익명
+        <img class="rating-icon"
+          alt="만족도: {{ review.get_like_score_text() }}"
+          title="만족도: {{ review.get_like_score_text() }}"
+          data-toggle="tooltip"
+          src="/static/images/like-{{ review.like_score }}.png">
+        <img class="rating-icon"
+          alt="사람 수: {{ review.get_crowded_score_text() }}"
+          title="사람 수: {{ review.get_crowded_score_text() }}"
+          data-toggle="tooltip"
+          src="/static/images/crowd-{{ review.crowded_score }}.png">
+        <span class="location-review__comment"
+          title="{{ review.comment }}"
+          data-toggle="tooltip">
           {% if review.comment %}
             {% if review.comment|length > 50 %}
               {{review.comment[:50] + '...'}}
@@ -40,39 +45,50 @@
               {{review.comment[:50]}}
             {% endif %}
           {% else %}
-            {{'(한줄평 없음.)'}}
+            {{'(한줄평 없음)'}}
           {% endif %}
+        </span>
 
-        <!--   {{ review.comment[:50] if review.comment else '(한줄평 없음)' }}
-         --></section>
+      <!--   {{ review.comment[:50] if review.comment else '(한줄평 없음)' }}
+        --></section>
 
+    {% endfor %}
+
+  {% else %}
+
+    <section class="location-review">
+      (평가가 없습니다)
+    </section>
+
+  {% endif %}
+
+  <nav aria-label="한줄평 더 보기" style="float: none; margin: auto;">
+    <ul class="pagination justify-content-center mt-2">
+      <li class="page-item {{ 'disabled' if review_begin < reviews_per_page else '' }}">
+        <a class="page-link" href="{{ url_for('view_location', location_id=location.id, review=review_begin - reviews_per_page) }}">&lt;</a>
+      </li>
+
+      {% for review_num in range(0, reviews|length, reviews_per_page) %}
+        <li class="page-item {{ 'active' if review_num == review_begin else '' }}">
+          <a class="page-link" href="{{ url_for('view_location', location_id=location.id, review=review_num) }}">{{ loop.index }}</a>
+        </li>
       {% endfor %}
 
-    {% else %}
+      <li class="page-item {{ 'disabled' if review_begin + reviews_per_page >= (reviews|length) else '' }}">
+        <a class="page-link" href="{{ url_for('view_location', location_id=location.id, review=review_begin + reviews_per_page) }}">&gt;</a>
+      </li>
+    </ul>
+  </nav>
+</section>
 
-      <section class="location-review">
-        (평가가 없습니다)
-      </section>
+{% endblock %}
 
-    {% endif %}
+{% block scripts %}
 
-    <nav aria-label="한줄평 더 보기" style="float: none; margin: auto;">
-      <ul class="pagination justify-content-center mt-2">
-        <li class="page-item {{ 'disabled' if review_begin < reviews_per_page else '' }}">
-          <a class="page-link" href="{{ url_for('view_location', location_id=location.id, review=review_begin - reviews_per_page) }}">&lt;</a>
-        </li>
+<script>
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+  });
+</script>
 
-        {% for review_num in range(0, reviews|length, reviews_per_page) %}
-          <li class="page-item {{ 'active' if review_num == review_begin else '' }}">
-            <a class="page-link" href="{{ url_for('view_location', location_id=location.id, review=review_num) }}">{{ loop.index }}</a>
-          </li>
-        {% endfor %}
-
-        <li class="page-item {{ 'disabled' if review_begin + reviews_per_page >= (reviews|length) else '' }}">
-          <a class="page-link" href="{{ url_for('view_location', location_id=location.id, review=review_begin + reviews_per_page) }}">&gt;</a>
-        </li>
-      </ul>
-    </nav>
-  </section>
-
-  {% endblock %}
+{% endblock %}
