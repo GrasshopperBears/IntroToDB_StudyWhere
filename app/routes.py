@@ -30,7 +30,7 @@ def home():
         .order_by(desc(Review.timestamp)) \
         .limit(5)
 
-    return render_template('home.html', title = 'Home', recent_reviews = reviews)
+    return render_template('home.html', title='Home', recent_reviews=reviews)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -41,7 +41,7 @@ def login():
         return redirect(url_for('home'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(user_name = form.user_name.data).first()
+        user = User.query.filter_by(user_name=form.user_name.data).first()
 
         if user is None:
             flash('\'{}\' 와 일치하는 사용자를 찾을 수 없습니다.'.format(form.user_name.data), 'error')
@@ -62,9 +62,9 @@ def register():
         return redirect(url_for('home'))
     register_form = RegisterForm()
     if register_form.validate_on_submit():
-        user = User(user_name   = register_form.user_name.data,
-                    person_name = register_form.person_name.data,
-                    password    = register_form.password.data
+        user = User(user_name=register_form.user_name.data,
+                    person_name=register_form.person_name.data,
+                    password=register_form.password.data
                 )
         db_session.add(user)
         db_session.commit()
@@ -81,17 +81,17 @@ def logout():
     return redirect(url_for('home'))
 
 
-@app.route('/locations', methods=['GET','POST'])
+@app.route('/locations', methods=['GET', 'POST'])
 def locations():
     """모든 공부 장소의 목록을 필터로 분류하여 보여준다."""
     form = LocationListFilterForm()
 
     locations = Location.query.all()
 
-    return render_template('locations.html', title='Locations', form = form, locations = locations)
+    return render_template('locations.html', title='Locations', form=form, locations=locations)
 
 
-@app.route('/locations/<location_id>', methods=['GET','POST'])
+@app.route('/locations/<location_id>', methods=['GET', 'POST'])
 def view_location(location_id):
     """한 공부 장소에 대한 평점과 한줄평의 목록을 보여준다."""
     location = Location.query.filter_by(id = location_id).first()
@@ -112,10 +112,10 @@ def view_location(location_id):
     else:
         review_pagination['next_page'] = 0
 
-    return render_template('location-view.html', title=location.name, location = location, review_pagination = review_pagination)
+    return render_template('location-view.html', title=location.name, location=location, review_pagination=review_pagination)
 
 
-@app.route('/locations/<location_id>/review', methods=['GET','POST'])
+@app.route('/locations/<location_id>/review', methods=['GET', 'POST'])
 @login_required
 def review_location(location_id):
     """한 공부 장소에 대한 평점과 한줄평을 남기거나, 기존의 평점/한줄평을 수정/삭제할 수 있다."""
@@ -144,7 +144,7 @@ def review_location(location_id):
                 db_session.delete(my_review)
                 db_session.commit()
 
-        return redirect(url_for('view_location', location_id = location_id))
+        return redirect(url_for('view_location', location_id=location_id))
 
     # 저장한 리뷰가 있으면 그 내용을 불러온다.
     if my_review:
@@ -152,10 +152,10 @@ def review_location(location_id):
         form.like_score.data    = str(my_review.like_score)
         form.crowded_score.data = str(my_review.crowded_score)
 
-    return render_template('location-review.html', title=location.name, form = form)
+    return render_template('location-review.html', title=location.name, form=form)
 
 
-@app.route('/locations/<location_id>/slots', methods = ['GET','POST'])
+@app.route('/locations/<location_id>/slots', methods=['GET', 'POST'])
 def view_location_slots(location_id):
     """공부 장소 내의 세미나실의 예약 상태를 조회한다."""
     from datetime import date, datetime, timedelta
@@ -204,7 +204,7 @@ def view_location_slots(location_id):
         segments = dict()
 
         for dt in datetimerange(available_begin, available_end, SEGMENT_SIZE):
-            segments[dt] = { 'is_reserved': False }
+            segments[dt] = {'is_reserved': False}
 
         #예약 가능한 시간대에 놓인 예약 항목을 불러온다
         reservations = Reservation.query \
@@ -222,18 +222,17 @@ def view_location_slots(location_id):
         if segments:
             slot.segments = segments
 
-    return render_template('location-slots.html', title = location.name + ' 예약하기',
-        slots = location.slots, form = form)
+    return render_template('location-slots.html', title=location.name + ' 예약하기', slots=location.slots, form=form)
 
 
-@app.route('/my_reservations', methods = ['GET','POST'])
+@app.route('/my_reservations', methods=['GET', 'POST'])
 @login_required
 def my_reservations():
     my_reservations = Reservation.query.filter_by(user_id = current_user.id).all()
-    return render_template('my-reservations.html', title = 'My Reservation', my_reservations = my_reservations)
+    return render_template('my-reservations.html', title='My Reservation', my_reservations=my_reservations)
 
 
-@app.route('/locations/<location_id>/slots/<slot_id>', methods = ['GET','POST'])
+@app.route('/locations/<location_id>/slots/<slot_id>', methods=['GET', 'POST'])
 @login_required
 def edit_reservation(location_id, slot_id):
     import datetime
@@ -331,5 +330,5 @@ def edit_reservation(location_id, slot_id):
         elif reservation_form.submit_cancel:
             return redirect(url_for('home'))
 
-    return render_template('edit_reservation.html', title = '예약 추가 정보 입력', form = reservation_form, date = date, begin_time = begin_time, slot = slot)
+    return render_template('edit_reservation.html', title='예약 추가 정보 입력', form=reservation_form, date=date, begin_time=begin_time, slot=slot)
 
