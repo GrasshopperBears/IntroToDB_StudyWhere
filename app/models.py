@@ -7,7 +7,7 @@ from flask_login import UserMixin
 from app import login
 
 
-class User(UserMixin,Base):
+class User(UserMixin, Base):
     __tablename__ = 'users'
     __table_args__ = {'mysql_collate': ' utf8_general_ci'}
     id            = Column(Integer, primary_key=True, unique=True)
@@ -15,7 +15,7 @@ class User(UserMixin,Base):
     person_name   = Column(String(10))
     password_hash = Column(String(150))
 
-    def __init__(self, id = None, user_name = None, person_name = None, password = None):
+    def __init__(self, id=None, user_name=None, person_name=None, password=None):
         from werkzeug.security import generate_password_hash
         self.id            = id
         self.user_name     = user_name
@@ -54,7 +54,7 @@ class LocationCategory(Base):
     id      = Column(Integer, unique=True, primary_key=True)
     name    = Column(String(20), unique=True)
 
-    def __init__(self, id = None, name = None):
+    def __init__(self, id=None, name=None):
         self.id     = id
         self.name   = name
 
@@ -81,8 +81,8 @@ class Location(Base):
     building        = relationship('Building', backref = 'locations')
     category        = relationship('LocationCategory', backref = 'locations')
 
-    def __init__(self, id=None, name=None, code=None, category_id=None, abw = None,
-                    aew = None, a_b_end = None, a_e_end = None):
+    def __init__(self, id=None, name=None, code=None, category_id=None, abw=None,
+                    aew=None, a_b_end=None, a_e_end=None):
         self.id             = id
         self.name           = name
         self.building_code  = code
